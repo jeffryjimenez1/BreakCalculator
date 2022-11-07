@@ -27,8 +27,6 @@ export class BreakCalculator{
     this.savedMilliseconds = 0;
     this.delMill = deletedMilliseconds;
 
-    console.log(this.delMill)
-
     this.Addtime();
 
   }
@@ -37,9 +35,6 @@ export class BreakCalculator{
 
     let firstDate = new Date(this.startTime.value);
     let secondDate = new Date(this.endTime.value);
-
-    console.log(firstDate)
-    console.log(secondDate)
 
     let allSplitsStart = [];
     let allSplitsEnd = [];
@@ -84,8 +79,6 @@ export class BreakCalculator{
     const totalMinutes  = totalHours.substring(totalHours.indexOf(':') + 1);
 
     const hoursArray = [getHours, totalMinutes];
-
-    console.log(`Time to milliseconds ${hoursArray}`);
 
     this.AddUpSplitTime(hoursArray);
     this.DeleteMessages();
