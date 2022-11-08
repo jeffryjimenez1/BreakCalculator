@@ -148,15 +148,20 @@ export class BreakCalculator{
     } else if(workTime[0] >= 11 && workTime[1] == 0) {
 
       this.AddBreakToUI('break-three-cr');
-      this.ShowMessages('CR gets 3 breaks and 1 lunch from 8 to 9 hours');
+      this.ShowMessages('CR gets 3 breaks and 1 lunch after 9');
 
-    }
-     else if(workTime[0] >= 9 && workTime[1] >= 1) {
+    } else if(workTime[0] > 8 && workTime[1] > 0) {
 
       this.AddBreakToUI('break-three-cr');
-      this.ShowMessages('CR gets 3 breaks and 1 lunch from 8 to 9 hours');
+      this.ShowMessages('CR gets 3 breaks and 1 lunch after 9');
 
-    } else if(workTime[0] >= 9 && workTime[1] == 0) {
+    } else if(workTime[0] > 9 && workTime[1] == 0) {
+
+      this.AddBreakToUI('break-three-cr');
+      this.ShowMessages('CR gets 3 breaks and 1 lunch after 9 hours');
+
+    } 
+     else if(workTime[0] >= 9 && workTime[1] == 0) {
 
       this.AddBreakToUI('break-two-cr');
       this.ShowMessages('CR gets 2 breaks and 1 lunch from 8 to 9 hours');
@@ -166,7 +171,7 @@ export class BreakCalculator{
       this.AddBreakToUI('break-two-cr');
       this.ShowMessages('CR gets 2 breaks and 1 lunch from 8 to 9 hours');
 
-    } else if(workTime[0] >= 8 && workTime[1] == 0) {
+    } else if(workTime[0] == 8 && workTime[1] == 0) {
 
       this.AddBreakToUI("lunch-cr", "Lunch-cr");
       this.ShowMessages("CR gets only lunch from 6 to 8 hours");
@@ -180,7 +185,7 @@ export class BreakCalculator{
     } else if(workTime[0] >= 4 && workTime[0] < 6 ) {
 
       this.AddBreakToUI("break-one", "Break 1");
-      this.ShowMessages("Add a break after 4 hours");
+      this.ShowMessages("CR get 1 break after 4 hours");
       
     } else {
 
@@ -199,6 +204,11 @@ export class BreakCalculator{
       this.ShowMessages("US and MX get 2 breaks and 1 lunch after 6 hours");
 
     }
+    else if(workTime[0] > 6 && workTime[1] == 0) {
+      this.AddBreakToUI("break-two");
+      this.ShowMessages("US and MX get 2 breaks and 1 lunch after 6 hours");
+
+    } 
      else if(workTime[0] > 5 && workTime[1] >= 1) {
       this.AddBreakToUI("break-two");
       this.ShowMessages("US and MX get 2 breaks and 1 lunch after 6 hours");
@@ -215,11 +225,11 @@ export class BreakCalculator{
     }
      else if(workTime[0] >= 5 && workTime[1] >= 0) {
       this.AddBreakToUI("break-one");
-      this.ShowMessages("US and MX get first break after 4 hours");
+      this.ShowMessages("US and MX get 1 break after 4 hours");
 
     } else if(workTime[0] >= 4 && workTime[0] < 5 ) {
       this.AddBreakToUI("break-one");
-      this.ShowMessages("US and MX get first break after 4 hours");
+      this.ShowMessages("US and MX get 1 break after 4 hours");
 
     }
      else if(workTime[0] >= 3 && workTime[1] >= 30 && VILocation === 'CA') {
