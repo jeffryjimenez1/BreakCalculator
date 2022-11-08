@@ -44,7 +44,7 @@ export class BreakCalculator{
 
     let addUpStarts = allSplitsStart.reduce((a, b) => a + b, 0);
 
-    let addUpEnds = allSplitsEnd.reduce((a, b) => a + b, 0); 
+    let addUpEnds = allSplitsEnd.reduce((a, b) => a + b, 0);
 
     let totalAddUps = addUpEnds - addUpStarts;
 
@@ -53,6 +53,7 @@ export class BreakCalculator{
     let passMill = originalMilliseconds - totalAddUps;
 
     this.savedMilliseconds = passMill - this.delMill;
+    
 
     this.TimeToMilliseconds();  
   }
@@ -144,15 +145,31 @@ export class BreakCalculator{
 
       this.ShowMessages('Shifts greater than 11 hours are not allowed in CR');
       
-    } else if(workTime[0] >= 9) {
+    } else if(workTime[0] >= 11 && workTime[1] == 0) {
 
       this.AddBreakToUI('break-three-cr');
-      this.ShowMessages('CR gets 3 breaks and 1 lunch after 9 hours shifts');
+      this.ShowMessages('CR gets 3 breaks and 1 lunch from 8 to 9 hours');
 
-    } else if(workTime[0] >= 8 && workTime[0] < 9) {
+    }
+     else if(workTime[0] >= 9 && workTime[1] >= 1) {
+
+      this.AddBreakToUI('break-three-cr');
+      this.ShowMessages('CR gets 3 breaks and 1 lunch from 8 to 9 hours');
+
+    } else if(workTime[0] >= 9 && workTime[1] == 0) {
 
       this.AddBreakToUI('break-two-cr');
       this.ShowMessages('CR gets 2 breaks and 1 lunch from 8 to 9 hours');
+
+    } else if(workTime[0] >= 8 && workTime[0] < 9 && workTime[1] >= 1) {
+
+      this.AddBreakToUI('break-two-cr');
+      this.ShowMessages('CR gets 2 breaks and 1 lunch from 8 to 9 hours');
+
+    } else if(workTime[0] >= 8 && workTime[1] == 0) {
+
+      this.AddBreakToUI("lunch-cr", "Lunch-cr");
+      this.ShowMessages("CR gets only lunch from 6 to 8 hours");
 
     }
      else if(workTime[0] >= 6 && workTime[0] < 8) {
@@ -160,7 +177,7 @@ export class BreakCalculator{
       this.AddBreakToUI("lunch-cr", "Lunch-cr");
       this.ShowMessages("CR gets only lunch from 6 to 8 hours");
 
-    } else if(workTime[0] >= 4) {
+    } else if(workTime[0] >= 4 && workTime[0] < 6 ) {
 
       this.AddBreakToUI("break-one", "Break 1");
       this.ShowMessages("Add a break after 4 hours");
@@ -173,27 +190,39 @@ export class BreakCalculator{
   }
 
   USMXbreakRules(workTime, VILocation) {
-    if(workTime[0] >= 10 && workTime[1] > 0 || workTime[0] > 10){
 
+    if(workTime[0] >= 10 && workTime[1] >= 1){
       this.ShowMessages('Shifts greater than 10 hours are not allowed');
       
-    } else if(workTime[0] >= 6 && workTime[0] <= 10) {
-
+    } else if(workTime[0] >= 10 && workTime[1] == 0) {
       this.AddBreakToUI("break-two");
-      this.ShowMessages('US and MX get 2 breaks and 1 lunch from 6 to 8 hours');
+      this.ShowMessages("US and MX get 2 breaks and 1 lunch after 6 hours");
 
-    } else if(workTime[0] >= 5 && workTime[0] <= 6) {
+    }
+     else if(workTime[0] > 5 && workTime[1] >= 1) {
+      this.AddBreakToUI("break-two");
+      this.ShowMessages("US and MX get 2 breaks and 1 lunch after 6 hours");
+
+    }
+     else if(workTime[0] > 5 && workTime[1] == 0) {
       this.AddBreakToUI("lunch");
-      this.ShowMessages("US and MX get 1 break and 1 lunch at 5 hours");
+      this.ShowMessages("US and MX get 1 break and 1 lunch after 5 hours");
 
-    } else if(workTime[0] >= 4 && workTime[0] <= 5) {
+    } else if(workTime[0] >= 5 && workTime[1] > 0) {
+      this.AddBreakToUI("lunch");
+      this.ShowMessages("US and MX get 1 break and 1 lunch after 5 hours");
 
+    }
+     else if(workTime[0] >= 5 && workTime[1] >= 0) {
       this.AddBreakToUI("break-one");
-      this.ShowMessages("US and MX get first break at 4 hours");
+      this.ShowMessages("US and MX get first break after 4 hours");
+
+    } else if(workTime[0] >= 4 && workTime[0] < 5 ) {
+      this.AddBreakToUI("break-one");
+      this.ShowMessages("US and MX get first break after 4 hours");
 
     }
      else if(workTime[0] >= 3 && workTime[1] >= 30 && VILocation === 'CA') {
-
       this.AddBreakToUI("break-one");
       this.ShowMessages("CA gets first break at 3.5 hours");
 
@@ -202,6 +231,7 @@ export class BreakCalculator{
       this.ShowMessages('No Breaks');
       
     }
+
   }
 
   DetermineBreaks(hoursMinutes){
@@ -226,7 +256,7 @@ export class BreakCalculator{
     segmentControlItem.innerHTML = `
           <input type="datetime-local" value="2022-10-30T00:00:00" class="enter-time addedSplitStart start-split">
           <input type="datetime-local" value="2022-10-29T00:00:00"  class="enter-time addedSplitEnd end-split">
-          <button class="close-split">&#10006</button>
+          <!-- <button class="close-split">&#10006</button> -->
     `;
 
     segmentBox.appendChild(segmentControlItem);
