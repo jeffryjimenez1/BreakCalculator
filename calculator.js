@@ -81,7 +81,6 @@ export class BreakCalculator{
 
     const hoursArray = [getHours, totalMinutes];
 
-    this.AddUpSplitTime(hoursArray);
     this.DeleteMessages();
     this.DeleteShiftBar();
     this.DetermineBreaks(hoursArray);
@@ -93,7 +92,6 @@ export class BreakCalculator{
     const messageDiv = document.createElement('div');
     const messageContainer= document.querySelector('.messages-box');
     messageDiv.innerHTML = `<p class="messageItem">${message}</p>`;
-
     messageContainer.appendChild(messageDiv);
 
   }
@@ -133,7 +131,15 @@ export class BreakCalculator{
       <div class="break break-two"><div>Break 2</div></div> 
       <div class="break break-three"><div>Break 3</div></div> 
       `;
-    } else {
+    } else if (breakType === 'break-three'){
+      shiftBar.innerHTML = ` 
+      <div class="break break-one"><div>Break 1</div></div> 
+      <div class="break lunch"><div>Lunch</div></div> 
+      <div class="break break-two"><div>Break 2</div></div> 
+      <div class="break break-three"><div>Break 3</div></div> 
+      `;
+    }
+     else {
       console.log('Alert No Break')
     }
 
@@ -141,105 +147,56 @@ export class BreakCalculator{
 
   CRbreakRules(workTime){
 
-    if(workTime[0] >= 11 && workTime[1] > 0){
+    if(workTime[0] > 10 && workTime[1] >= 1){
 
-      this.ShowMessages('Shifts greater than 11 hours are not allowed in CR');
+      this.ShowMessages('CR daily limit is 11:00 hours');
       
-    } else if(workTime[0] >= 11 && workTime[1] == 0) {
-
+    } else if (workTime[0] >= 9) {
       this.AddBreakToUI('break-three-cr');
-      this.ShowMessages('CR gets 3 breaks and 1 lunch after 9');
+      this.ShowMessages("CR gets 3 breaks and 1 lunch at 9:00 hours");
 
-    } else if(workTime[0] > 8 && workTime[1] > 0) {
-
-      this.AddBreakToUI('break-three-cr');
-      this.ShowMessages('CR gets 3 breaks and 1 lunch after 9');
-
-    } else if(workTime[0] > 9 && workTime[1] == 0) {
-
-      this.AddBreakToUI('break-three-cr');
-      this.ShowMessages('CR gets 3 breaks and 1 lunch after 9 hours');
-
-    } 
-     else if(workTime[0] >= 9 && workTime[1] == 0) {
-
+    } else if(workTime[0] >= 7) {
       this.AddBreakToUI('break-two-cr');
-      this.ShowMessages('CR gets 2 breaks and 1 lunch from 8 to 9 hours');
+      this.ShowMessages("CR gets 2 breaks and 1 lunch at 7:00 hours");
 
-    } else if(workTime[0] >= 8 && workTime[0] < 9 && workTime[1] >= 1) {
+    } else if(workTime[0] >= 6) {
+      this.AddBreakToUI('lunch-cr');
+      this.ShowMessages("CR only gets Lunch from 6 to 6:59 hours");
 
-      this.AddBreakToUI('break-two-cr');
-      this.ShowMessages('CR gets 2 breaks and 1 lunch from 8 to 9 hours');
+    } else if(workTime[0] >= 4) {
+      this.AddBreakToUI('break-one');
+      this.ShowMessages("CR gets 1 break at 4:00 hours");
 
-    } else if(workTime[0] == 8 && workTime[1] == 0) {
-
-      this.AddBreakToUI("lunch-cr", "Lunch-cr");
-      this.ShowMessages("CR gets only lunch from 6 to 8 hours");
-
-    }
-     else if(workTime[0] >= 6 && workTime[0] < 8) {
-
-      this.AddBreakToUI("lunch-cr", "Lunch-cr");
-      this.ShowMessages("CR gets only lunch from 6 to 8 hours");
-
-    } else if(workTime[0] >= 4 && workTime[0] < 6 ) {
-
-      this.AddBreakToUI("break-one", "Break 1");
-      this.ShowMessages("CR get 1 break after 4 hours");
-      
     } else {
-
-      this.ShowMessages('No Breaks for CR for less than 4 hours');
-      
+      this.ShowMessages("No Breaks");
     }
   }
 
   USMXbreakRules(workTime, VILocation) {
 
-    if(workTime[0] >= 10 && workTime[1] >= 1){
-      this.ShowMessages('Shifts greater than 10 hours are not allowed');
+    if(workTime[0] > 11 && workTime[1] >= 1){
+      this.ShowMessages('US and MX daily limit is 12 hours. <br>11 hours is the limit for California');
       
-    } else if(workTime[0] >= 10 && workTime[1] == 0) {
-      this.AddBreakToUI("break-two");
-      this.ShowMessages("US and MX get 2 breaks and 1 lunch after 6 hours");
+    } else if(workTime[0] > 10 && workTime[1] >= 1 && VILocation === 'CA') {
+      this.ShowMessages("CA daily limit is 11:00 hours");
 
-    }
-    else if(workTime[0] > 6 && workTime[1] == 0) {
-      this.AddBreakToUI("break-two");
-      this.ShowMessages("US and MX get 2 breaks and 1 lunch after 6 hours");
+    } else if( (workTime[0] > 9 && workTime[1] >= 1) || (workTime[0] > 10 && workTime[1] == 0 )) {
+      this.AddBreakToUI('break-three');
+      this.ShowMessages("MX and US get 3 breaks and 1 lunch after 10:01 hours");
 
-    } 
-     else if(workTime[0] > 5 && workTime[1] >= 1) {
-      this.AddBreakToUI("break-two");
-      this.ShowMessages("US and MX get 2 breaks and 1 lunch after 6 hours");
+    } else if( (workTime[0] > 5 && workTime[1] >= 1) || (workTime[0] > 6 && workTime[1] == 0))  {
+      this.AddBreakToUI('break-two');
+      this.ShowMessages("MX and US get 2 breaks and 1 lunch after 6:01 hours");
 
-    }
-     else if(workTime[0] > 5 && workTime[1] == 0) {
-      this.AddBreakToUI("lunch");
-      this.ShowMessages("US and MX get 1 break and 1 lunch after 5 hours");
+    } else if( (workTime[0] > 4 && workTime[1] >= 1) || (workTime[0] > 5 && workTime[1] == 0)) {
+      this.AddBreakToUI('lunch');
+      this.ShowMessages("MX and US get 1 break and 1 lunch after 5:01 hours");
 
-    } else if(workTime[0] >= 5 && workTime[1] > 0) {
-      this.AddBreakToUI("lunch");
-      this.ShowMessages("US and MX get 1 break and 1 lunch after 5 hours");
-
-    }
-     else if(workTime[0] >= 5 && workTime[1] >= 0) {
-      this.AddBreakToUI("break-one");
-      this.ShowMessages("US and MX get 1 break after 4 hours");
-
-    } else if(workTime[0] >= 4 && workTime[0] < 5 ) {
-      this.AddBreakToUI("break-one");
-      this.ShowMessages("US and MX get 1 break after 4 hours");
-
-    }
-     else if(workTime[0] >= 3 && workTime[1] >= 30 && VILocation === 'CA') {
-      this.AddBreakToUI("break-one");
-      this.ShowMessages("CA gets first break at 3.5 hours");
-
+    } else if( (workTime[0] > 2 && workTime[1] >= 30) || (workTime[0] > 3 && workTime[1] == 0) || (workTime[0] > 3 && workTime[1] == 1)) {
+      this.AddBreakToUI('break-one');
+      this.ShowMessages("MX and US get 1 break after 3:30 hours");
     } else {
-
-      this.ShowMessages('No Breaks');
-      
+      this.ShowMessages("No Breaks")
     }
 
   }
@@ -247,6 +204,8 @@ export class BreakCalculator{
   DetermineBreaks(hoursMinutes){
 
     const AllLocations = document.querySelector('.locations').value;
+
+    this.AddUpSplitTime(hoursMinutes, AllLocations);
 
     if(AllLocations === "CR"){
 
@@ -257,6 +216,7 @@ export class BreakCalculator{
       this.USMXbreakRules(hoursMinutes, AllLocations);
 
     }
+
   }
 
   NewSegment() {
@@ -277,7 +237,12 @@ export class BreakCalculator{
 
   }
 
-  AddUpSplitTime(totalHours){
+  AddUpSplitTime(totalHours, location){
+    // if(totalHours[0] > 5 && location !== 'CR') {
+    //   this.totalBox.innerHTML = `<p><span class="total-time">${totalHours[0]}:${totalHours[1]}</span></p>`;
+    // } 
+    // convert 30 minutes to millisecons and deduct from total for US and MX
+
     this.totalBox.innerHTML = `<p><span class="total-time">${totalHours[0]}:${totalHours[1]}</span></p>`;
   }
 
