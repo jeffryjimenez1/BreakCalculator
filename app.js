@@ -45,16 +45,11 @@ splitSegmentsBox.addEventListener('click', (e) => {
 
     const deletedMilliseconds = firstInputDate - secondInputDate;
 
-    console.log(deletedMilliseconds)
-
     new BreakCalculator().ReduceDeletedSplitMilliseconds(deletedMilliseconds);
     
     e.target.parentElement.style.display = 'none';
 
-    
-    
   }
-
-
+  
 });
 

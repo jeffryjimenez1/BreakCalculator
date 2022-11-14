@@ -147,7 +147,7 @@ export class BreakCalculator{
 
   CRbreakRules(workTime){
 
-    if(workTime[0] > 10 && workTime[1] >= 1){
+    if((workTime[0] > 10 && workTime[1] >= 1) || (workTime[0] > 11 && workTime[1] == 0)){
 
       this.ShowMessages('CR daily limit is 11:00 hours');
       
@@ -174,12 +174,9 @@ export class BreakCalculator{
 
   USMXbreakRules(workTime, VILocation) {
 
-    if(workTime[0] > 11 && workTime[1] >= 1){
+    if((workTime[0] > 11 && workTime[1] >= 1) || (workTime[0] > 12 && workTime[1] == 0)){
       this.ShowMessages('US and MX daily limit is 12 hours. <br>11 hours is the limit for California');
       
-    } else if(workTime[0] > 10 && workTime[1] >= 1 && VILocation === 'CA') {
-      this.ShowMessages("CA daily limit is 11:00 hours");
-
     } else if( (workTime[0] > 9 && workTime[1] >= 1) || (workTime[0] > 10 && workTime[1] == 0 )) {
       this.AddBreakToUI('break-three');
       this.ShowMessages("MX and US get 3 breaks and 1 lunch after 10:01 hours");
