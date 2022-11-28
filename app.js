@@ -5,9 +5,12 @@ const resetBtn = document.querySelector('.clear-btn');
 const locationMenu = document.querySelector('.locations');
 const addSplitBtn = document.querySelector('.addSplit-btn');
 const splitSegmentsBox = document.querySelector('.segment-box');
+const mainForm = document.querySelector('.main-form');
 
 
 new BreakCalculator().disableCalendar();
+
+
 
 button.addEventListener('click', () => {
 
