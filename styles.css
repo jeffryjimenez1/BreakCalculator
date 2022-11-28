@@ -70,6 +70,28 @@
     margin-top: 200px;
 }
 
+
+.main-form .times {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.main-form label {
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+.input-item label {
+    display: block;
+}
+
+.input-item input {
+    width: 100%;
+}
+
 .enter-time {
     font-size: 1.5rem;
     padding: 5px;
@@ -77,14 +99,11 @@
     width: 30%;
     text-align: center;
     height: 40px;
-    margin-right: 20px;
 }
 
 .enter-time[type="date"]::-webkit-calendar-picker-indicator {
     display: none;
 }
-
-
 
 .main-btn,
 .clear-btn,
