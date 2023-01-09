@@ -218,7 +218,8 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator
     font-weight: bold;
 }
 
-.total-box {
+.total-box,
+.total-box-paid {
     text-align: center;
     display: inline-block;
     border-radius: 8px;

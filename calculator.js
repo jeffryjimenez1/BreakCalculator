@@ -5,6 +5,7 @@ const shiftBar = document.querySelector('.shift-bar');
 const messageSideBar = document.querySelector('.messages-box');
 const segmentBox = document.querySelector('.segment-box');
 const totalBox = document.querySelector('.total-box');
+const totalBoxPaid = document.querySelector('.total-box-paid');
 
 
 export class BreakCalculator{
@@ -12,6 +13,7 @@ export class BreakCalculator{
       this.startTime = startTime;
       this.endTime = endTime;
       this.totalBox = totalBox;
+      this.totalBoxPaid = totalBoxPaid;
       this.messageSideBar = messageSideBar;
       this.savedMilliseconds = 0;
       this.delMill = 0;
@@ -53,14 +55,54 @@ export class BreakCalculator{
     let passMill = originalMilliseconds - totalAddUps;
 
     this.savedMilliseconds = passMill - this.delMill;
-    
 
-    this.TimeToMilliseconds();  
+    console.log(this.savedMilliseconds);
+    this.GetPaidHours();
   }
 
-  TimeToMilliseconds() {
+  GetPaidHours(){
+    const AllLocations = document.querySelector('.locations').value;
+    const totalHours = this.TimeToMilliseconds(this.savedMilliseconds);
 
-    let milliseconds = this.savedMilliseconds;
+    const box = this.totalBox;
+    const boxPaid = this.totalBoxPaid;
+
+    function addTimeUI(timePassed){
+      box.innerHTML = `<p><span class="total-time">${totalHours[0]}:${totalHours[1]}</span></p>`;
+      boxPaid.innerHTML = `<p><span class="total-time">${timePassed[0]}:${timePassed[1]}</span></p>`;
+    };
+
+    console.log(totalHours)
+    
+    if(parseInt(+totalHours[0]) > 4 && parseInt(+totalHours[1]) > 0 && AllLocations === "MX" || parseInt(+totalHours[0]) > 4 && parseInt(+totalHours[1]) > 0 &&  AllLocations === "US"){
+
+      const totalTime = this.TimeToMilliseconds(this.savedMilliseconds - 1800000);
+
+      addTimeUI(totalTime);
+
+      this.USMXbreakRules(totalHours);
+
+    } else if (parseInt(+totalHours[0]) > 5 && AllLocations === "MX" || parseInt(+totalHours[0]) > 5 &&  AllLocations === "US"){
+
+      const totalTime = this.TimeToMilliseconds(this.savedMilliseconds - 1800000);
+
+      addTimeUI(totalTime);
+
+      this.USMXbreakRules(totalHours);
+
+    }
+     else {
+
+      addTimeUI(totalHours);
+      this.CRbreakRules(totalHours);
+      
+    }
+    
+  }
+
+  TimeToMilliseconds(totalmilliseconds) {
+
+    let milliseconds = totalmilliseconds;
 
     let seconds = Math.floor(milliseconds / 1000);
     let minutes = Math.floor(seconds / 60);
@@ -83,7 +125,7 @@ export class BreakCalculator{
 
     this.DeleteMessages();
     this.DeleteShiftBar();
-    this.DetermineBreaks(hoursArray);
+    return hoursArray;
 
   }
   
@@ -198,24 +240,6 @@ export class BreakCalculator{
 
   }
 
-  DetermineBreaks(hoursMinutes){
-
-    const AllLocations = document.querySelector('.locations').value;
-
-    this.AddUpSplitTime(hoursMinutes, AllLocations);
-
-    if(AllLocations === "CR"){
-
-      this.CRbreakRules(hoursMinutes);
-
-    } else {
-
-      this.USMXbreakRules(hoursMinutes, AllLocations);
-
-    }
-
-  }
-
   NewSegment() {
 
     const segmentControlItem = document.createElement('div');
@@ -234,15 +258,6 @@ export class BreakCalculator{
 
   }
 
-  AddUpSplitTime(totalHours, location){
-    // if(totalHours[0] > 5 && location !== 'CR') {
-    //   this.totalBox.innerHTML = `<p><span class="total-time">${totalHours[0]}:${totalHours[1]}</span></p>`;
-    // } 
-    // convert 30 minutes to millisecons and deduct from total for US and MX
-
-    this.totalBox.innerHTML = `<p><span class="total-time">${totalHours[0]}:${totalHours[1]}</span></p>`;
-  }
-
   DeleteMessages(){
     messageSideBar.innerHTML = '';
   }
@@ -251,6 +266,7 @@ export class BreakCalculator{
   
     this.savedMilliseconds = [];
     this.totalBox.innerHTML = '00:00';
+    this.totalBoxPaid.innerHTML = '00:00';
     this.startTime.value = "2022-10-29T00:00:00";
     this.endTime.value = "2022-10-30T00:00:00";
 

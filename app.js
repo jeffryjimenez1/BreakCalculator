@@ -13,7 +13,6 @@ new BreakCalculator().disableCalendar();
 
 
 button.addEventListener('click', () => {
-
   
   new BreakCalculator().Addtime();
   
