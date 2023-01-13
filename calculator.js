@@ -56,7 +56,6 @@ export class BreakCalculator{
 
     this.savedMilliseconds = passMill - this.delMill;
 
-    console.log(this.savedMilliseconds);
     this.GetPaidHours();
   }
 
@@ -72,8 +71,7 @@ export class BreakCalculator{
       boxPaid.innerHTML = `<p><span class="total-time">${timePassed[0]}:${timePassed[1]}</span></p>`;
     };
 
-    console.log(totalHours)
-    
+
     if(parseInt(+totalHours[0]) > 4 && parseInt(+totalHours[1]) > 0 && AllLocations === "MX" || parseInt(+totalHours[0]) > 4 && parseInt(+totalHours[1]) > 0 &&  AllLocations === "US"){
 
       const totalTime = this.TimeToMilliseconds(this.savedMilliseconds - 1800000);
@@ -90,8 +88,18 @@ export class BreakCalculator{
 
       this.USMXbreakRules(totalHours);
 
+    }  else if (AllLocations === "MX" || AllLocations === "US") {
+
+      const totalTime = this.TimeToMilliseconds(this.savedMilliseconds);
+
+      addTimeUI(totalTime);
+
+      this.USMXbreakRules(totalHours);
+
     }
      else {
+
+      const totalTime = this.TimeToMilliseconds(this.savedMilliseconds);
 
       addTimeUI(totalHours);
       this.CRbreakRules(totalHours);
