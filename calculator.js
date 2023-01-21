@@ -72,7 +72,7 @@ export class BreakCalculator{
     };
 
 
-    if(parseInt(+totalHours[0]) > 4 && parseInt(+totalHours[1]) > 30 && AllLocations === "MX" || parseInt(+totalHours[0]) > 4 && parseInt(+totalHours[1]) > 30 &&  AllLocations === "US"){
+    if(parseInt(+totalHours[0]) > 4 && parseInt(+totalHours[1]) >= 1 && AllLocations === "MX" || parseInt(+totalHours[0]) > 4 && parseInt(+totalHours[1]) > 30 &&  AllLocations === "US"){
 
       const totalTime = this.TimeToMilliseconds(this.savedMilliseconds - 1800000);
 
@@ -235,7 +235,7 @@ export class BreakCalculator{
       this.AddBreakToUI('break-two');
       this.ShowMessages("MX and US get 2 breaks and 1 lunch after 6:01 hours");
 
-    } else if( (workTime[0] > 4 && workTime[1] > 30) || (workTime[0] > 5 && workTime[1] >= 0)) {
+    } else if( (workTime[0] > 4 && workTime[1] > 0) || (workTime[0] > 5 && workTime[1] >= 0)) {
       this.AddBreakToUI('lunch');
       this.ShowMessages("MX and US get 1 break and 1 lunch after 5:01 hours");
  
