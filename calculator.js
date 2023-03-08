@@ -72,7 +72,7 @@ export class BreakCalculator{
     };
 
 
-    if(parseInt(+totalHours[0]) > 4 && parseInt(+totalHours[1]) >= 1 && AllLocations === "MX" || parseInt(+totalHours[0]) > 4 && parseInt(+totalHours[1]) > 30 &&  AllLocations === "US"){
+    if(parseInt(+totalHours[0]) > 4 && parseInt(+totalHours[1]) >= 1 && AllLocations === "MX" || parseInt(+totalHours[0]) > 4 && parseInt(+totalHours[1]) >= 1 &&  AllLocations === "US"){
 
       const totalTime = this.TimeToMilliseconds(this.savedMilliseconds - 1800000);
 
