@@ -1,0 +1,28 @@
+{
+  "name": "breakcalculator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "build": "webpack --mode production",
+    "dev": "webpack serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeffryjimenez1/BreakCalculator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jeffryjimenez1/BreakCalculator/issues"
+  },
+  "homepage": "https://github.com/jeffryjimenez1/BreakCalculator#readme",
+  "devDependencies": {
+    "css-loader": "^6.8.1",
+    "dayjs": "^1.11.8",
+    "style-loader": "^3.3.3",
+    "webpack": "^5.88.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
+  }
+}
