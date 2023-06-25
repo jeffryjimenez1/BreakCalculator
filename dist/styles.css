@@ -181,20 +181,27 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator
 }
 
 .break-one {
-    left: 15%;
+    left: 10%;
 }
 
 .break-two {
-    left: 65%;
+    left: 30%;
 }
 
 .break-three {
-    left: 80%;
+    left: 65%;
 }
 
 .lunch {
-    left: 40%;
-    padding: 0 30px;
+    left: 50%;
+    padding: 0 15px;
+    background: rgb(163, 2, 142);
+    color: #fff;
+}
+
+.lunch-two {
+    left: 80%;
+    padding: 0 15px;
     background: rgb(163, 2, 142);
     color: #fff;
 }

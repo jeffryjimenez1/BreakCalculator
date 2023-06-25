@@ -194,6 +194,7 @@ export class BreakCalculator{
       shiftBar.innerHTML = ` 
       <div class="break break-one"><div>Break 1</div></div> 
       <div class="break lunch"><div>Lunch</div></div> 
+      <div class="break lunch-two"><div>2nd Lunch</div></div> 
       <div class="break break-two"><div>Break 2</div></div> 
       <div class="break break-three"><div>Break 3</div></div> 
       `;
@@ -231,7 +232,7 @@ export class BreakCalculator{
     }
   }
 
-  USMXbreakRules(workTime, VILocation) {
+  USMXbreakRules(workTime) {
 
     if((workTime[0] > 11 && workTime[1] > 30) || (workTime[0] > 12 && workTime[1] >= 0)){
       this.ShowMessages('US and MX daily limit is 12 hours. <br>11 hours is the limit for California');
