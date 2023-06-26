@@ -247,7 +247,7 @@ export class BreakCalculator{
       
     } else if( (workTime[0] > 9 && workTime[1] > 30) || (workTime[0] > 10 && workTime[1] >= 0 )) {
       this.AddBreakToUI('break-three');
-      this.ShowMessages("MX and US get 3 breaks and 1 lunch after 10:01 hours");
+      this.ShowMessages("MX and US get 3 breaks and 2 lunch after 10:01 hours");
 
     } else if( (workTime[0] > 5 && workTime[1] > 30) || (workTime[0] > 6 && workTime[1] >= 0) )  {
       this.AddBreakToUI('break-two');
