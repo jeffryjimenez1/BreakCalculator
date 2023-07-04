@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
 
+:root {
+    --font-title: 2rem;
+    --font-large: 1.2rem;
+    --font-small: 1.5rem;
+}
+
 * {
     box-sizing: border-box;
     padding: 0;
@@ -7,6 +13,7 @@
 }
 
 .wrapper {
+    margin: auto;
     max-width: 1300px;
     font-family: 'Roboto', sans-serif;
     height: 100vh;
@@ -24,16 +31,18 @@
 }
 
  
-.wrapper-text h1 {
-    background: rgb(36, 32, 32);
-    color: #fff;
-    padding: 20px;
-    margin-bottom: 50px;
+.main-title {
+    color: black;
+    margin: 50px 0;
+    font-size: var(--font-title);
+    text-transform: uppercase;
 }
 
 /* MESSAGES BOX  */
 
 .messages-box {
+    color: #fff;
+    border-radius: 10px;
     grid-column: 3/4;
     grid-row: 1/3;
     width: 90%;
@@ -43,31 +52,30 @@
 
 
 .permanent-messages {
-    grid-column: 1/2;
-    grid-row: 1/3;
     padding: 20px 10px;
-    background: rgb(36, 32, 32);
 }
 
 .message {
-    background: #fff;
+    border: 2px solid black;
+    color: #000;
     margin-bottom: 20px;
     text-align: left;
     line-height: 1.5;
     padding: 10px;
     font-weight: 600;
     border-radius: 5px;
+    
 }
 
 .messageItem {
-    border: 2px solid #000;
+    background:rgb(16, 63, 63);
     padding: 10px;
     border-radius: 10px;
     font-size: 1.2rem;
     font-weight: 600;
     text-align: center;
     line-height: 1.4;
-    margin-top: 200px;
+    width: 100%;
 }
 
 
@@ -78,7 +86,7 @@
 }
 
 .main-form label {
-    font-size: 1.2rem;
+    font-size: var(--font-large);
     font-weight: 600;
     display: inline-block;
     margin-bottom: 15px;
@@ -88,17 +96,14 @@
     display: block;
 }
 
-.input-item input {
-    width: 100%;
+input[type="datetime-local"] {
+    font-size: 30px;
 }
 
 .enter-time {
-    font-size: 1.5rem;
-    padding: 5px;
+    font-size: var(--font-large);
     border-radius: 8px;
-    width: 30%;
     text-align: center;
-    height: 40px;
 }
 
 .enter-time[type="date"]::-webkit-calendar-picker-indicator {
@@ -108,8 +113,8 @@
 .main-btn,
 .clear-btn,
 .split-btn {
-    font-size: 1.3rem;
-    padding: 5px 30px;
+    font-size: 15px;
+    padding: 5px 15px;
     border-radius: 8px;
     transition: all 0.2s ease;
     height: 40px;
@@ -120,7 +125,8 @@
 .main-btn {
     background:rgb(29, 119, 119);
     border: 3px solid rgb(3, 49, 49);
-    width: 30%;
+    font-size: 15px;
+    padding: 5px 15px;
 }
 
 .main-btn:hover {
@@ -132,6 +138,7 @@
     padding: 0;
     border: 3px solid rgb(134, 24, 85);
     color: rgb(134, 24, 85);
+    margin-left: 100px;
 }
 
 .clear-btn:hover {
@@ -154,7 +161,6 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator
 .locations {
     font-size: 1rem;
     padding: 10px;
-    height: 40px;
     border-radius: 8px;
     border: 2px solid black;
     font-weight: 600;
@@ -162,16 +168,18 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator
 
 
 .shift-bar {
-    position: relative;
+    display: flex;
+    justify-content: space-around;
     padding: 0 100px;
     height: 60px;
     background:rgb(124, 202, 202);
     border-radius: 10px;
     border: solid black 2px;
+    margin-bottom: 20px;
 }
 
 .break {
-    position: absolute;
+    /* position: absolute; */
     background: rgb(255, 204, 110);
     height: 56px;
     border-radius: 10px;
@@ -210,10 +218,9 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator
     padding: 10px;
 }
 
-.wrapper-controls {
-    margin-bottom: 50px;
+.hours-results {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
 }
 
 .paid-time {
@@ -221,7 +228,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator
 }
 
 .paid-time span {
-    font-size: 1.5rem;
+    font-size: var(--font-large);
     font-weight: bold;
 }
 
@@ -234,11 +241,12 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator
     padding: 5px 10px;
     font-weight: 600;
     right: 0;
-    font-size: 1.5rem;
+    font-size: var(--font-large);
     background:rgb(190, 23, 140);
     color: #fff;
     margin-left: 15px;
     resize: none;
+    font-size: 25px;
 }
 
 /* SPLIT SHIFTS  */
@@ -250,9 +258,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator
     margin-top: 50px;
 }
 
-.bysegments h2 {
-    margin-bottom: 20px;
-}
+
 .bysegments div {
     margin-top: 20px;
 }
@@ -309,3 +315,50 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator
     background:rgb(131, 59, 99);
     color:#fff;
 }
+
+@media screen and (max-width: 930px) {
+    .wrapper {
+        max-width: 100%;
+        margin: 0;
+        display: block;
+    }
+    .main-form .times {
+        display: block;
+    }
+
+    .main-btn,
+    .clear-btn,
+    .split-btn {
+
+        margin-top: 60px;
+    }
+
+    .messageItem {
+        margin-top: 20px;
+    }
+  }
+
+
+  @media screen and (max-width: 500px) {
+
+    input[type="datetime-local"] {
+        font-size: var(--font-small);
+    }
+
+    .bysegments {
+        margin-top: 20px;
+    }
+
+    .bysegments div {
+        margin-top: 20px;
+    }
+
+    .split-btn {
+        margin-top: 10px;
+    }
+
+    .break {
+       margin: 0 5px;
+    }
+    
+  }

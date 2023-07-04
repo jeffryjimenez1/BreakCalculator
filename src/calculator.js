@@ -44,9 +44,6 @@ export class BreakCalculator{
     const firstDate = dayjs.utc(this.startTime.value).tz('America/New_York');
     const secondDate = dayjs.utc(this.endTime.value).tz('America/New_York');
 
-    // let firstDate = new Date(this.startTime.value);
-    // let secondDate = new Date(this.endTime.value);
-
     let allSplitsStart = [];
     let allSplitsEnd = [];
 

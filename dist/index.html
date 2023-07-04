@@ -13,9 +13,13 @@
     <div class="wrapper">
 
         <div class="wrapper-text">
-            <h1>Break Calculator</h1>
+            <h1 class="main-title">Break Calculator</h1>
 
             <div class="wrapper-controls">
+
+                <div class="shift-bar">
+                </div>
+
 
                 <div class="paid-time">
                     <span>Total Hours:</span>
@@ -26,6 +30,8 @@
                     <span>Paid Hours:</span>
                     <div class="total-box-paid">00:00</div>
                 </div>
+
+                
 
                 <div class="main-form">
                     <div class="times">
@@ -42,14 +48,14 @@
                         <div class="input-item">
                             <label for="locations">Location</label>
                             <select name="locations" id="locations" class="locations">
-                                <option value="MX">MX</option>
                                 <option value="CR">CR</option>
-                                <option value="US">US</option>
+                                <option value="US">MX/US</option>
                             </select>
                         </div>
                     </div>
 
                     <button class="main-btn">Get Results</button>
+                    <button class="clear-btn">Reset</button>
                 </div>
                 
                 <div class="bysegments">
@@ -64,32 +70,34 @@
 
             </div>
 
-            <div class="shift-bar">
+            
+
+            <div class="permanent-messages">
+                <div class="messages-box">
+
+                </div>
+                <div class="message">
+                    <p>If there is a split, you can use the split as a lunch</p>
+                </div>
+                <div class="message">
+                    <p>For MX and US make sure to add lunch before 5 hours. <br>Either by 4:30 or 4:45 hours.</p>
+                </div>
+                <div class="message">
+                    <p>Lunch is not paid in MX and US.<br>If lunch is scheduled. Paid Time = (Total hours - 30 min lunch)</p>
+                </div>
+                <div class="message">
+                    <p>CA daily limit is 11 hours if OT is available. <br>They can't work more than 8 hours in the 7th day</p>
+                </div>
+                <div class="feedback-form">
+                    <a href="https://forms.office.com/r/nv7itt1YxC" target="_blank">Feedback Form</a>
+                </div>
             </div>
-            <button class="clear-btn">Reset</button>
+
         </div>
 
-        <div class="messages-box">
+       
 
-        </div>
-
-        <div class="permanent-messages">
-            <div class="message">
-                <p>If there is a split, you can use the split as a lunch</p>
-            </div>
-            <div class="message">
-                <p>For MX and US make sure to add lunch before 5 hours. <br>Either by 4:30 or 4:45 hours.</p>
-            </div>
-            <div class="message">
-                <p>Lunch is not paid in MX and US.<br>If lunch is scheduled. Paid Time = (Total hours - 30 min lunch)</p>
-            </div>
-            <div class="message">
-                <p>CA daily limit is 11 hours if OT is available. <br>They can't work more than 8 hours in the 7th day</p>
-            </div>
-            <div class="feedback-form">
-                <a href="https://forms.office.com/r/nv7itt1YxC" target="_blank">Feedback Form</a>
-            </div>
-        </div>
+        
 
     </div>
     
