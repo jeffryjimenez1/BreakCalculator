@@ -310,7 +310,7 @@ export class BreakCalculator{
       this.ShowMessages("CR gets 1 break at 4:00 hours");
 
     } else {
-      this.ShowMessages("No Breaks");
+      this.ShowMessages("No Breaks.");
     }
   }
 
