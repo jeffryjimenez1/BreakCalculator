@@ -85,13 +85,9 @@ export class BreakCalculator{
     const AllLocations = document.querySelector('.locations').value;
     const totalHours = this.TimeToMilliseconds(this.savedMilliseconds);
 
-    console.log('NY')
-
     if (AllLocations === "NY") {
 
       this.CheckNYconditions(totalHours);
-
-      console.log('NY')
 
     } else if (AllLocations === "MX" && parseInt(+totalHours[0]) > 10) {
 
