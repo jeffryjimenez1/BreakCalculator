@@ -71,6 +71,12 @@ body {
     
 }
 
+.message-update {
+    border: 2px solid green;
+    background: rgb(230, 238, 230);
+    color: green;
+}
+
 .messageItem {
     background:rgb(16, 63, 63);
     padding: 10px;
