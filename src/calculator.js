@@ -85,22 +85,23 @@ export class BreakCalculator{
     const AllLocations = document.querySelector('.locations').value;
     const totalHours = this.TimeToMilliseconds(this.savedMilliseconds);
 
-    if (AllLocations === "MX" && parseInt(+totalHours[0]) > 10) {
-      this.MXBreakRules(totalHours);
-    }
+    if (AllLocations === "NY") {
 
-    else if (AllLocations === "NY") {
       this.CheckNYconditions(totalHours);
-      console.log(AllLocations)
-    }
-    
-    else if ( AllLocations === "MX" || AllLocations === "US" ) {
-      this.CheckUSMXconditions(totalHours);
-    } 
 
-    else {
+    } else if (AllLocations === "MX" && parseInt(+totalHours[0]) > 10) {
+
+      this.MXBreakRules(totalHours);
+
+    } else if ( AllLocations === "MX" || AllLocations === "US" ) {
+
+      this.CheckUSMXconditions(totalHours);
+
+    } else {
+
       this.AddPaidHours((0), totalHours);
       this.CRbreakRules(totalHours);
+
     }
   }
 
