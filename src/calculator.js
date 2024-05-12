@@ -89,7 +89,7 @@ export class BreakCalculator{
       this.MXBreakRules(totalHours);
     }
 
-    if (AllLocations === "NY") {
+    else if (AllLocations === "NY") {
       this.CheckNYconditions(totalHours);
       console.log(AllLocations)
     }
