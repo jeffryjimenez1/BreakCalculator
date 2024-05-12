@@ -91,6 +91,7 @@ export class BreakCalculator{
 
     if (AllLocations === "NY") {
       this.CheckNYconditions(totalHours);
+      console.log(AllLocations)
     }
     
     else if ( AllLocations === "MX" || AllLocations === "US" ) {
