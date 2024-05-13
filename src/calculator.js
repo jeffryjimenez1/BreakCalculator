@@ -323,7 +323,7 @@ export class BreakCalculator{
       this.ShowMessages('US daily limit is 12 hours. <br>11 hours is the limit for California and Mexico');
       this.AddBreakToUI('not-allowed');
       
-    } else if ((shiftStar.getHours() < 11  && shiftEnd.getHours() >= 19) && workTime[0] > 5){
+    } else if ((   shiftStar.getHours() < 11 && shiftEnd.getHours() >= 19 && shiftEnd.getMinutes() > 0 ) && workTime[0] > 5){
 
       this.ShowMessages("Add second 30-minutes lunch between 5 PM and 7 PM");
       this.AddBreakToUI('break-ny-secondLunch');
@@ -338,7 +338,7 @@ export class BreakCalculator{
       this.AddBreakToUI('break-ny-45');
     }
 
-    else if ( (  (shiftStar.getHours() > 8 && shiftStar.getHours() < 11 && shiftStar.getMinutes() >= 30) || (shiftStar.getHours() > 10 && shiftStar.getHours() < 12 && shiftStar.getMinutes() < 1 ) ) && workTime[0] > 5 )  {
+    else if ( (  (shiftStar.getHours() > 8 && shiftStar.getHours() < 11 && shiftStar.getMinutes() >= 30)  || (shiftStar.getHours() > 9 && shiftStar.getHours() < 12 && shiftStar.getMinutes() < 1 ) || (shiftStar.getHours() > 9 && shiftStar.getHours() < 11 && shiftStar.getMinutes() >= 0 ) ) && workTime[0] > 5   )  {
 
       this.ShowMessages("Add lunch between 11:00 AM and 2:00 PM. <br> Add the lunch and 2 breaks");
       this.AddBreakToUI('break-ny');
