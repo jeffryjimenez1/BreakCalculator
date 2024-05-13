@@ -89,7 +89,7 @@ export class BreakCalculator{
 
       this.CheckNYconditions(totalHours);
 
-    } else if (AllLocations === "MX" && parseInt(+totalHours[0]) > 10) {
+    } else if (AllLocations === "MX" && parseInt(+totalHours[0]) > 10 && parseInt(+totalHours[1]) > 0) {
 
       this.MXBreakRules(totalHours);
 
@@ -140,7 +140,6 @@ export class BreakCalculator{
 
     else if((shiftStar.getHours() > 12 && shiftEnd.getHours() <= 23 ) && parseInt(+totalHours[0]) > 5 || (shiftStar.getHours() >= 0 && shiftEnd.getHours() < 7 ) && parseInt(+totalHours[0]) > 5 ) {
       this.AddPaidHours((2700000), totalHours);
-      console.log('SECONDS ')
     }
 
     else if(shiftStar.getHours() <= 11  && shiftEnd.getHours() >= 19) {
