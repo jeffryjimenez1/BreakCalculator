@@ -134,10 +134,13 @@ export class BreakCalculator{
     const shiftStar = new Date(this.startTime.value);
     const shiftEnd = new Date(this.endTime.value);
 
-    if ((shiftStar.getHours() > 12 && shiftEnd.getHours() < 7 ) && parseInt(+totalHours[0]) > 9 && parseInt(+totalHours[1]) >= 31  ){
-      this.AddPaidHours((2700000 + 1800000), totalHours);
-    }
 
+    if ( (shiftStar.getHours() >= 13 || shiftEnd.getHours() <= 6) && ( ( parseInt(+totalHours[0]) > 9 && parseInt(+totalHours[1]) > 45  ) || parseInt(+totalHours[0]) > 10 && parseInt(+totalHours[1]) >= 0  ) ){
+
+      this.AddPaidHours((2700000 + 1800000), totalHours);   
+      console.log(totalHours, shiftStar, shiftEnd)
+
+    } 
     else if((shiftStar.getHours() > 12 && shiftEnd.getHours() <= 23 ) && parseInt(+totalHours[0]) > 5 || (shiftStar.getHours() >= 0 && shiftEnd.getHours() < 7 ) && parseInt(+totalHours[0]) > 5 ) {
       this.AddPaidHours((2700000), totalHours);
     }
@@ -323,12 +326,12 @@ export class BreakCalculator{
       this.ShowMessages('US daily limit is 12 hours. <br>11 hours is the limit for California and Mexico');
       this.AddBreakToUI('not-allowed');
       
-    } else if ((   shiftStar.getHours() < 11 && shiftEnd.getHours() >= 19 && shiftEnd.getMinutes() > 0 ) && workTime[0] > 5){
+    } else if (( shiftStar.getHours() < 11 && shiftEnd.getHours() >= 19 && shiftEnd.getMinutes() > 0 ) || ( shiftStar.getHours() < 11 && shiftEnd.getHours() >= 20 && shiftEnd.getMinutes() >= 0 ) && workTime[0] > 5){ 
 
       this.ShowMessages("Add second 30-minutes lunch between 5 PM and 7 PM");
       this.AddBreakToUI('break-ny-secondLunch');
 
-    } else if (((shiftStar.getHours() > 12 && shiftEnd.getHours() <= 23 ) || (shiftStar.getHours() > 12 && shiftEnd.getHours() < 7 ) || shiftStar.getHours() <= 6  ) && workTime[0] > 9 && workTime[1] >= 31 ) {
+    } else if ((shiftStar.getHours() > 12 || shiftEnd.getHours() <= 6 && shiftEnd.getMinutes() < 1 ) && (workTime[0] >= 10  && workTime[1] > 45) ) {
 
       this.ShowMessages("Add a 45-minutes lunch and a second 30-minutes lunch + breaks");
       this.AddBreakToUI('break-ny-45-10hours');
