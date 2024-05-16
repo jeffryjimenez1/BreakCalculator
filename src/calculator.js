@@ -138,7 +138,6 @@ export class BreakCalculator{
     if ( (shiftStar.getHours() >= 13 || shiftEnd.getHours() <= 6) && ( ( parseInt(+totalHours[0]) > 9 && parseInt(+totalHours[1]) > 45  ) || parseInt(+totalHours[0]) > 10 ) ){
 
       this.AddPaidHours((2700000 + 1800000), totalHours); 
-      console.log(totalHours, shiftStar, shiftEnd)
 
     } 
     
@@ -162,7 +161,7 @@ export class BreakCalculator{
       this.AddPaidHours((2700000), totalHours); 
     }
 
-    else if(shiftStar.getHours() <= 11  && shiftEnd.getHours() >= 19 && shiftEnd.getMinutes() >= 0 || shiftStar.getHours() <= 11  && shiftEnd.getHours() >= 20 && shiftEnd.getMinutes() >= 0) {
+    else if(shiftStar.getHours() < 11  && shiftEnd.getHours() >= 19 && shiftEnd.getMinutes() > 0 || shiftStar.getHours() < 11  && shiftEnd.getHours() >= 20 && shiftEnd.getMinutes() >= 0) {
       this.AddPaidHours((1800000 * 2), totalHours);
     }
 
@@ -283,15 +282,15 @@ export class BreakCalculator{
     else if (breakType === 'break-ny-secondLunch') {
       shiftBar.innerHTML = ` 
       <div class="break break-one"><div>Break 1</div></div> 
-      <div class="break lunch"><div>30m</div></div> 
-      <div class="break lunch-two"><div>30m</div></div> 
+      <div class="break lunch"><div>30m NY</div></div> 
+      <div class="break lunch-two"><div>30m NY</div></div> 
       <div class="break break-two"><div>Break 2</div></div> 
       `;
     }  else if (breakType === 'break-ny-secondLunch-3break') {
       shiftBar.innerHTML = ` 
       <div class="break break-one"><div>Break 1</div></div> 
-      <div class="break lunch"><div>30m</div></div> 
-      <div class="break lunch-two"><div>30m</div></div> 
+      <div class="break lunch"><div>30m NY</div></div> 
+      <div class="break lunch-two"><div>30m NY</div></div> 
       <div class="break break-two"><div>Break 2</div></div> 
       <div class="break break-three"><div>Break 3</div></div> 
       `;
@@ -344,26 +343,15 @@ export class BreakCalculator{
     }
   }
 
-  NYBreakRules(workTime) {
-    const shiftStar = new Date(this.startTime.value);
-    const shiftEnd = new Date(this.endTime.value);
+  Check45LunchNYrules(shiftStar, shiftEnd, workTime) {
 
-    if((workTime[0] > 11 && workTime[1] > 30) || (workTime[0] > 12 && workTime[1] >= 0)){
+    if ( (workTime[0] > 12 && workTime[1] > 15 ) || workTime[0] > 13 ) {
+
       this.ShowMessages('US daily limit is 12 hours. <br>11 hours is the limit for California and Mexico');
       this.AddBreakToUI('not-allowed');
-      
-    } else if (( shiftStar.getHours() < 11 && shiftEnd.getHours() >= 19 && shiftEnd.getMinutes() > 0 ) && workTime[0] >= 10 && workTime[1] > 0 || ( shiftStar.getHours() < 11 && shiftEnd.getHours() >= 20 &&   shiftEnd.getMinutes() >= 0 ) && workTime[0] >= 10 && workTime[1] > 0){ 
 
-      this.ShowMessages("Add second 30-minutes lunch between 5 PM and 7 PM and 3rd break");
-      this.AddBreakToUI('break-ny-secondLunch-3break');
-
-    }
-     else if (( shiftStar.getHours() < 11 && shiftEnd.getHours() >= 19 && shiftEnd.getMinutes() > 0 ) || ( shiftStar.getHours() < 11 && shiftEnd.getHours() >= 20 &&   shiftEnd.getMinutes() >= 0 ) && workTime[0] > 5){ 
-
-      this.ShowMessages("Add second 30-minutes lunch between 5 PM and 7 PM");
-      this.AddBreakToUI('break-ny-secondLunch');
-
-    }  else if ((shiftStar.getHours() > 12 || shiftStar.getHours() <= 6 && shiftStar.getMinutes() < 1 ) && (workTime[0] >= 10  && workTime[1] > 45) ) {
+    } 
+    else if ((shiftStar.getHours() > 12 || shiftStar.getHours() <= 6 && shiftStar.getMinutes() < 1 ) && ( (workTime[0] >= 10  && workTime[1] > 45) || workTime[0] > 10  )  ) {
 
       this.ShowMessages("Add a 45-minutes lunch and a second 30-minutes lunch + breaks");
       this.AddBreakToUI('break-ny-45-10hours');
@@ -373,25 +361,96 @@ export class BreakCalculator{
 
       this.ShowMessages("Add a 45-minutes lunch + breaks for people who work between 1:00 PM and 6:00 AM");
       this.AddBreakToUI('break-ny-45');
-      console.log('45 less than 10 runs')
 
     } else if ( (shiftStar.getHours() > 12  || shiftStar.getHours() <= 6 && shiftEnd.getMinutes() < 1 ) && (workTime[0] > 6 && workTime[1] >= 0) ) {
 
       this.ShowMessages("Add a 45-minutes lunch + breaks for people who work between 1:00 PM and 6:00 AM");
       this.AddBreakToUI('break-ny-45');
-    }
 
-
-    else if ( (  (shiftStar.getHours() > 8 && shiftStar.getHours() < 11 && shiftStar.getMinutes() >= 30 )  || (shiftStar.getHours() > 10 && shiftStar.getHours() < 12 && shiftStar.getMinutes() < 30 ) || (shiftStar.getHours() > 9 && shiftStar.getHours() < 11 && shiftStar.getMinutes() >= 0 ) ) && workTime[0] > 5   )  {
-
-      this.ShowMessages("Add lunch between 11:00 AM and 2:00 PM. <br> Add the lunch and 2 breaks");
-      this.AddBreakToUI('break-ny');
-
-    } 
-    
-    else {
+    } else {
       this.USMXbreakRules(workTime);
     }
+
+  }
+
+  CheckExtra30LunchNY(shiftStar, shiftEnd, workTime){
+
+    if ((workTime[0] > 12 && workTime[1] >= 1) || workTime[0] > 13 ) {
+
+      this.ShowMessages('US daily limit is 12 hours. <br>11 hours is the limit for California and Mexico');
+      this.AddBreakToUI('not-allowed');
+
+    } 
+     else if (( shiftStar.getHours() < 11 && shiftEnd.getHours() >= 19 && shiftEnd.getMinutes() > 0 ) || ( shiftStar.getHours() < 11 && shiftEnd.getHours() >= 20 &&   shiftEnd.getMinutes() >= 0 ) && workTime[0] > 5){ 
+
+      this.ShowMessages("Add second 30-minutes lunch between 5 PM and 7 PM");
+      this.AddBreakToUI('break-ny-secondLunch');
+
+    } else {
+      this.USMXbreakRules(workTime);
+    }
+
+  }
+
+  CheckEarlyLunchNY(shiftStar, shiftEnd, workTime){
+
+
+    if ( (workTime[0] > 6) || (workTime[0] > 5 && workTime[1] >= 30 ) ) { 
+
+      if ((workTime[0] > 12 && workTime[1] >= 1) || workTime[0] > 13 ) {
+
+        this.ShowMessages('US daily limit is 12 hours. <br>11 hours is the limit for California and Mexico');
+        this.AddBreakToUI('not-allowed');
+  
+      } else if ((workTime[0] > 9 && workTime[1] > 30) || workTime[0] > 10) {
+
+        this.ShowMessages("Add the first lunch between 11:00 AM and 2:00 PM. <br> Add the first lunch before the breaks");
+        this.AddBreakToUI('break-ny-secondLunch-3break');
+
+      }
+
+      else if ( (  (shiftStar.getHours() > 8 && shiftStar.getHours() < 11 && shiftStar.getMinutes() >= 30 )  || (shiftStar.getHours() > 10 && shiftStar.getHours() < 12 && shiftStar.getMinutes() < 30 ) || (shiftStar.getHours() > 9 && shiftStar.getHours() < 11 && shiftStar.getMinutes() >= 0 ) ) )  {
+  
+        this.ShowMessages("Add lunch between 11:00 AM and 2:00 PM. <br> Add the lunch before the breaks");
+        this.AddBreakToUI('break-ny');
+  
+      }    
+      
+      else if ( (  (shiftStar.getHours() > 8 && shiftStar.getHours() < 11 && shiftStar.getMinutes() >= 30 )  || (shiftStar.getHours() > 10 && shiftStar.getHours() < 12 && shiftStar.getMinutes() < 30 ) || (shiftStar.getHours() > 9 && shiftStar.getHours() < 11 && shiftStar.getMinutes() >= 0 ) ) )  {
+  
+        this.ShowMessages("Add lunch between 11:00 AM and 2:00 PM. <br> Add the lunch before the breaks");
+        this.AddBreakToUI('break-ny');
+  
+      } 
+      
+      else {
+        this.USMXbreakRules(workTime);
+      }
+  
+    } else {
+      this.USMXbreakRules(workTime);
+    }
+
+
+  }
+
+  NYBreakRules(workTime) {
+    const shiftStar = new Date(this.startTime.value);
+    const shiftEnd = new Date(this.endTime.value);
+
+    if ( (shiftStar.getHours() > 12  || shiftStar.getHours() <= 6 ) ) { 
+
+      this.Check45LunchNYrules(shiftStar, shiftEnd, workTime);
+
+     } else if ( shiftStar.getHours() < 11 && shiftEnd.getHours() >= 19 ) {
+
+        this.CheckExtra30LunchNY(shiftStar, shiftEnd, workTime);
+
+     } else {
+
+      this.CheckEarlyLunchNY(shiftStar, shiftEnd, workTime);
+
+    } 
 
   }
 
@@ -406,7 +465,7 @@ export class BreakCalculator{
 
   USMXbreakRules(workTime) {
 
-    if((workTime[0] > 11 && workTime[1] > 30) || (workTime[0] > 12 && workTime[1] >= 0)){
+    if((workTime[0] > 12 && workTime[1] >= 1) || workTime[0] > 13 ){
       this.ShowMessages('US daily limit is 12 hours. <br>11 hours is the limit for California');
       this.AddBreakToUI('not-allowed');
       
