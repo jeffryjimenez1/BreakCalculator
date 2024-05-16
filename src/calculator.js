@@ -351,7 +351,12 @@ export class BreakCalculator{
       this.AddBreakToUI('not-allowed');
 
     } 
-    else if ((shiftStar.getHours() > 12 || shiftStar.getHours() <= 6 && shiftStar.getMinutes() < 1 ) && ( (workTime[0] >= 10  && workTime[1] > 45) || workTime[0] > 10  )  ) {
+    else if ((shiftStar.getHours() > 12 || shiftStar.getHours() <= 6 && shiftStar.getMinutes() < 1 ) && ( (workTime[0] >= 10  && workTime[1] > 45) )) {
+
+      this.ShowMessages("Add a 45-minutes lunch and a second 30-minutes lunch + breaks");
+      this.AddBreakToUI('break-ny-45-10hours');
+
+    }  else if ((shiftStar.getHours() > 12 || shiftStar.getHours() <= 6 && shiftStar.getMinutes() < 1 ) && workTime[0] >= 11) {
 
       this.ShowMessages("Add a 45-minutes lunch and a second 30-minutes lunch + breaks");
       this.AddBreakToUI('break-ny-45-10hours');
