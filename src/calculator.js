@@ -396,15 +396,15 @@ export class BreakCalculator{
       this.ShowMessages('US daily limit is 12 hours. <br>11 hours is the limit for California and Mexico');
       this.AddBreakToUI('not-allowed');
 
-    } else if (( shiftStar.getHours() < 11 && shiftEnd.getHours() >= 19 && shiftEnd.getMinutes() > 0 ) || ( shiftStar.getHours() < 11 && shiftEnd.getHours() >= 20 &&   shiftEnd.getMinutes() >= 0 ) && workTime[0] > 11 ){ 
+    } else if (( shiftStar.getHours() < 11 && shiftEnd.getHours() >= 19 && shiftEnd.getMinutes() > 0 ) && workTime[0] > 11 || ( shiftStar.getHours() < 11 && shiftEnd.getHours() >= 20 && shiftEnd.getMinutes() >= 0 ) && workTime[0] > 11 ){ 
 
       this.ShowMessages("Add second 30-minutes lunch between 5 PM and 7 PM");
-      this.AddBreakToUI('break-three'); 
+      this.AddBreakToUI('break-ny-secondLunch-3break'); 
 
-    } else if (( shiftStar.getHours() < 11 && shiftEnd.getHours() >= 19 && shiftEnd.getMinutes() > 0 ) || ( shiftStar.getHours() < 11 && shiftEnd.getHours() >= 20 &&   shiftEnd.getMinutes() >= 0 ) && workTime[0] > 10 && workTime[1] > 0){ 
+    } else if (( shiftStar.getHours() < 11 && shiftEnd.getHours() >= 19 && shiftEnd.getMinutes() > 0 ) && workTime[0] > 10 && workTime[1] > 0 || ( shiftStar.getHours() < 11 && shiftEnd.getHours() >= 20 &&   shiftEnd.getMinutes() >= 0 ) && workTime[0] > 10 && workTime[1] > 0){ 
 
       this.ShowMessages("Add second 30-minutes lunch between 5 PM and 7 PM");
-      this.AddBreakToUI('break-three'); 
+      this.AddBreakToUI('break-ny-secondLunch-3break'); 
 
     }
      else if (( shiftStar.getHours() < 11 && shiftEnd.getHours() >= 19 && shiftEnd.getMinutes() > 0 ) || ( shiftStar.getHours() < 11 && shiftEnd.getHours() >= 20 &&   shiftEnd.getMinutes() >= 0 ) && workTime[0] > 5){ 
