@@ -355,7 +355,6 @@ export class BreakCalculator{
 
       this.ShowMessages("Add a 45-minutes lunch and a second 30-minutes lunch + breaks");
       this.AddBreakToUI('break-ny-45-10hours');
-      console.log(' run 1 ')
 
     }  else if ((shiftStar.getHours() > 12 || shiftStar.getHours() <= 6 && shiftStar.getMinutes() < 1 ) && workTime[0] >= 11) {
 
@@ -372,15 +371,12 @@ export class BreakCalculator{
 
       this.ShowMessages("Add a 45-minutes lunch + breaks for people who work between 1:00 PM and 6:00 AM");
       this.AddBreakToUI('break-ny-45');
-      console.log(' run 2 ')
 
     } 
      else if ( (shiftStar.getHours() > 12  || shiftStar.getHours() <= 6 && shiftStar.getMinutes() < 1 ) && (workTime[0] > 5 && workTime[1] > 0) ) {
 
       this.ShowMessages("Add a 45-minutes lunch + breaks for people who work between 1:00 PM and 6:00 AM");
       this.AddBreakToUI('break-ny-45');
-
-      console.log(' run 3 ')
 
     } else {
       this.USMXbreakRules(workTime);
@@ -429,9 +425,9 @@ export class BreakCalculator{
         this.ShowMessages("Add lunch between 11:00 AM and 2:00 PM. <br> Add the lunch before the breaks");
         this.AddBreakToUI('break-ny');
   
-      }    
-      
-      else if ( (  (shiftStar.getHours() > 8 && shiftStar.getHours() < 11 && shiftStar.getMinutes() >= 30 )  || (shiftStar.getHours() > 10 && shiftStar.getHours() < 12 && shiftStar.getMinutes() < 30 ) || (shiftStar.getHours() > 9 && shiftStar.getHours() < 11 && shiftStar.getMinutes() >= 0 ) ) )  {
+      }
+
+      else if ( (  (shiftStar.getHours() > 9 && shiftStar.getHours() < 11  ) ) )  {
   
         this.ShowMessages("Add lunch between 11:00 AM and 2:00 PM. <br> Add the lunch before the breaks");
         this.AddBreakToUI('break-ny');
@@ -457,7 +453,7 @@ export class BreakCalculator{
 
       this.Check45LunchNYrules(shiftStar, shiftEnd, workTime);
 
-     } else if ( shiftStar.getHours() < 11 && shiftEnd.getHours() >= 19 ) {
+     } else if ( ( shiftStar.getHours() < 11 && shiftEnd.getHours() > 20 )  || ( shiftStar.getHours() < 11 && shiftEnd.getHours() >= 19 && shiftEnd.getMinutes() > 0)  ) {
 
         this.CheckExtra30LunchNY(shiftStar, shiftEnd, workTime);
 
