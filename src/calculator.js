@@ -355,22 +355,32 @@ export class BreakCalculator{
 
       this.ShowMessages("Add a 45-minutes lunch and a second 30-minutes lunch + breaks");
       this.AddBreakToUI('break-ny-45-10hours');
+      console.log(' run 1 ')
 
     }  else if ((shiftStar.getHours() > 12 || shiftStar.getHours() <= 6 && shiftStar.getMinutes() < 1 ) && workTime[0] >= 11) {
 
       this.ShowMessages("Add a 45-minutes lunch and a second 30-minutes lunch + breaks");
       this.AddBreakToUI('break-ny-45-10hours');
 
-    }
+    } else if ((shiftStar.getHours() > 12 || shiftStar.getHours() <= 6 ) && ( (workTime[0] >= 10  && workTime[1] > 45)) ){
+
+      this.ShowMessages("Add a 45-minutes lunch and a second 30-minutes lunch + breaks");
+      this.AddBreakToUI('break-ny-45-10hours');
+
+    } 
+     else if ( (shiftStar.getHours() <= 6 && shiftStar.getMinutes() > 0 ) && (workTime[0] > 5 && workTime[1] > 0) ) {
+
+      this.ShowMessages("Add a 45-minutes lunch + breaks for people who work between 1:00 PM and 6:00 AM");
+      this.AddBreakToUI('break-ny-45');
+      console.log(' run 2 ')
+
+    } 
      else if ( (shiftStar.getHours() > 12  || shiftStar.getHours() <= 6 && shiftStar.getMinutes() < 1 ) && (workTime[0] > 5 && workTime[1] > 0) ) {
 
       this.ShowMessages("Add a 45-minutes lunch + breaks for people who work between 1:00 PM and 6:00 AM");
       this.AddBreakToUI('break-ny-45');
 
-    } else if ( (shiftStar.getHours() > 12  || shiftStar.getHours() <= 6 && shiftEnd.getMinutes() < 1 ) && (workTime[0] > 6 && workTime[1] >= 0) ) {
-
-      this.ShowMessages("Add a 45-minutes lunch + breaks for people who work between 1:00 PM and 6:00 AM");
-      this.AddBreakToUI('break-ny-45');
+      console.log(' run 3 ')
 
     } else {
       this.USMXbreakRules(workTime);
