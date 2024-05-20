@@ -369,23 +369,17 @@ export class BreakCalculator{
       this.AddBreakToUI('break-ny-45-10hours');
 
     } 
-    else if ( (shiftStar.getHours() > 12 || shiftStar.getHours() < 7 && shiftStar.getMinutes() < 1 ) && workTime[0] > 5 && workTime[1] > 0 ) {
+    else if ((shiftStar.getHours() > 12 || shiftStar.getHours() <= 6 && shiftStar.getMinutes() < 1) && workTime[0] > 6 && workTime[1] >= 0){
 
       this.ShowMessages("Add a 45-minutes lunch + breaks for people who work between 1:00 PM and 6:00 AM");
       this.AddBreakToUI('break-ny-45');
 
-    }  
-    else if ( (shiftStar.getHours() > 12 || shiftStar.getHours() <= 5 && shiftStar.getMinutes() >= 0 ) && workTime[0] > 5 && workTime[1] > 0 ) {
+    } 
+    else if ((shiftStar.getHours() > 12 || shiftStar.getHours() <= 6 && shiftStar.getMinutes() < 1) && workTime[0] > 5 && workTime[1] >= 1){
 
       this.ShowMessages("Add a 45-minutes lunch + breaks for people who work between 1:00 PM and 6:00 AM");
       this.AddBreakToUI('break-ny-45');
 
-    }
-    else if ((shiftStar.getHours() > 12 || shiftStar.getHours() <= 6 ) && workTime[0] > 6 && workTime[1] > 0){
-
-      this.ShowMessages("Add a 45-minutes lunch + breaks for people who work between 1:00 PM and 6:00 AM");
-      this.AddBreakToUI('break-ny-45');
-      
     } 
     else {
       this.USMXbreakRules(workTime);
