@@ -366,7 +366,7 @@ export class BreakCalculator{
       this.ShowMessages("Add a 45-minutes lunch and a second 30-minutes lunch + breaks");
       this.AddBreakToUI('break-ny-45-10hours');
 
-    } else if ((shiftStar.getHours() > 12 || shiftStar.getHours() <= 6 ) && workTime[0] >= 6){
+    } else if ((shiftStar.getHours() > 12 || shiftStar.getHours() <= 6 ) && workTime[0] > 6){
 
       this.ShowMessages("Add a 45-minutes lunch + breaks for people who work between 1:00 PM and 6:00 AM");
       this.AddBreakToUI('break-ny-45');
