@@ -380,6 +380,11 @@ export class BreakCalculator{
       this.ShowMessages("Add a 45-minutes lunch + breaks for people who work between 1:00 PM and 6:00 AM");
       this.AddBreakToUI('break-ny-45');
 
+    } else if ((shiftStar.getHours() > 12 || shiftStar.getHours() < 6 ) && workTime[0] > 5 && workTime[1] >= 1){
+
+      this.ShowMessages("Add a 45-minutes lunch + breaks for people who work between 1:00 PM and 6:00 AM");
+      this.AddBreakToUI('break-ny-45');
+
     } 
     else {
       this.USMXbreakRules(workTime);
