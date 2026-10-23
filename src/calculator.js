@@ -1,3 +1,4 @@
+import { calculateDuration, policyClock, wallValue } from "./time.cjs";
 const startTime = document.querySelector('.start-time');
 const endTime = document.querySelector('.end-time');
 const shiftBar = document.querySelector('.shift-bar');
@@ -35,32 +36,17 @@ export class BreakCalculator{
 
   Addtime(){
 
-    const dayjs = require('dayjs');
-    let utc = require('dayjs/plugin/utc')
-    let timezone = require('dayjs/plugin/timezone')
-    dayjs.extend(utc) 
-    dayjs.extend(timezone)
-
-    const firstDate = dayjs.utc(this.startTime.value).tz('America/New_York');
-    const secondDate = dayjs.utc(this.endTime.value).tz('America/New_York');
-
-    let allSplitsStart = [];
-    let allSplitsEnd = [];
-
-    document.querySelectorAll('.start-split').forEach(item => allSplitsStart.push(new Date(item.value).getTime()));
-    document.querySelectorAll('.end-split').forEach(item => allSplitsEnd.push(new Date(item.value).getTime()));
-
-    let addUpStarts = allSplitsStart.reduce((a, b) => a + b, 0);
-
-    let addUpEnds = allSplitsEnd.reduce((a, b) => a + b, 0);
-
-    let totalAddUps = addUpEnds - addUpStarts;
-
-    let originalMilliseconds =  (secondDate - firstDate);
-
-    let passMill = originalMilliseconds - totalAddUps;
-
-    this.savedMilliseconds = passMill - this.delMill;
+    this.DeleteMessages();
+    this.DeleteShiftBar();
+    const splits = Array.from(document.querySelectorAll('.segmentItem')).map(row => [row.querySelector('.start-split').value, row.querySelector('.end-split').value]);
+    try {
+      this.savedMilliseconds = calculateDuration(this.startTime.value, this.endTime.value, splits);
+    } catch (error) {
+      this.totalBox.textContent = '—';
+      this.totalBoxPaid.textContent = '—';
+      this.ShowMessages(error.message);
+      return;
+    }
 
     this.GetPaidHours();
   }
@@ -91,6 +77,8 @@ export class BreakCalculator{
 
     } else if (AllLocations === "MX" && parseInt(+totalHours[0]) > 10 && parseInt(+totalHours[1]) > 0) {
 
+      this.CheckUSMXconditions(totalHours);
+      this.DeleteMessages();
       this.MXBreakRules(totalHours);
 
     } else if ( AllLocations === "MX" || AllLocations === "US" ) {
@@ -131,8 +119,8 @@ export class BreakCalculator{
 
   CheckNYconditions(totalHours) {
 
-    const shiftStar = new Date(this.startTime.value);
-    const shiftEnd = new Date(this.endTime.value);
+    const shiftStar = policyClock(this.startTime.value);
+    const shiftEnd = policyClock(this.endTime.value);
 
 
     if ( (shiftStar.getHours() >= 13 || shiftEnd.getHours() <= 6) && ( ( parseInt(+totalHours[0]) > 9 && parseInt(+totalHours[1]) > 45  ) || parseInt(+totalHours[0]) > 10 ) ){
@@ -202,7 +190,7 @@ export class BreakCalculator{
 
     minutes = minutes % 60;
 
-    hours = hours % 24;
+    // Keep durations longer than a day intact.
 
     let totalHours = `${this.PadTo2Digits(hours)}:${this.PadTo2Digits(minutes)}`;
 
@@ -477,8 +465,8 @@ export class BreakCalculator{
   }
 
   NYBreakRules(workTime) {
-    const shiftStar = new Date(this.startTime.value);
-    const shiftEnd = new Date(this.endTime.value);
+    const shiftStar = policyClock(this.startTime.value);
+    const shiftEnd = policyClock(this.endTime.value);
 
     if ( (shiftStar.getHours() > 12  || shiftStar.getHours() <= 6 ) ) { 
 
@@ -536,11 +524,9 @@ export class BreakCalculator{
 
     const segmentControlItem = document.createElement('div');
     segmentControlItem.classList = 'segmentItem';
-    segmentControlItem.innerHTML = `
-          <input type="datetime-local" value="2022-10-30T00:00:00" class="enter-time addedSplitStart start-split">
-          <input type="datetime-local" value="2022-10-29T00:00:00"  class="enter-time addedSplitEnd end-split">
-          <!-- <button class="close-split">&#10006</button> -->
-    `;
+    const number = document.querySelectorAll('.segmentItem').length + 1;
+    const midnight = wallValue(Date.now()).slice(0, 10) + 'T00:00';
+    segmentControlItem.innerHTML = `<label>Split start (ET)<input type="datetime-local" value="${midnight}" required class="enter-time start-split" aria-label="Split ${number} start in Eastern Time"></label><label>Split end (ET)<input type="datetime-local" value="${midnight}" required class="enter-time end-split" aria-label="Split ${number} end in Eastern Time"></label><button type="button" class="close-split" aria-label="Remove split ${number}">Remove</button>`;
 
     segmentBox.appendChild(segmentControlItem);
 
