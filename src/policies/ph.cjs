@@ -1,3 +1,4 @@
+const {explainBand}=require('./explanation.cjs');
 const {breakItem,lunch}=require('./shared.cjs');
 
 // Philippines table supplied by the user. Working minutes after splits,
@@ -13,5 +14,5 @@ module.exports=({minutes})=>{
  if(!band)return {items:[],unsupported:true,message:'Philippines rules above 10:00 hours have not been configured yet.'};
  const items=Array.from({length:band.breaks},breakItem);
  if(band.lunch)items.splice(1,0,lunch(band.lunch));
- return {items,message:items.length?'Philippines break policy. Lunch is unpaid.':'No breaks.'};
+ return {items,message:explainBand('Philippines',bands,band,items)};
 };

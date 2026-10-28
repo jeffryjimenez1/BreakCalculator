@@ -1,3 +1,4 @@
+const {explainBand}=require('./explanation.cjs');
 const {breakItem,lunch}=require('./shared.cjs');
 // Malaysia: thresholds use working minutes after split intervals, before lunch.
 const bands=[
@@ -11,6 +12,6 @@ function malaysia({minutes}){
  if(!band)return {items:[],unsupported:true,message:'Malaysia rules above 10:00 hours have not been configured yet.'};
  const items=Array.from({length:band.breaks},breakItem);
  if(band.lunch)items.splice(1,0,lunch(band.lunch));
- return {items,message:items.length?'Malaysia break policy.':'No breaks.'};
+ return {items,message:explainBand('Malaysia',bands,band,items)};
 }
 module.exports={malaysia};

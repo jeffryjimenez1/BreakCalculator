@@ -1,3 +1,4 @@
+const {explainBand}=require('./explanation.cjs');
 const {breakItem,lunch}=require('./shared.cjs');
 const {policyClock}=require('../time.cjs');
 // Inputs already represent the selected location's clock. Never convert them.
@@ -20,5 +21,5 @@ module.exports=({minutes,start})=>{
  const items=Array.from({length:band.breaks},breakItem);
  const night=band.lunch&&isNightShift(start);
  if(band.lunch)items.splice(1,0,lunch(night?45:band.lunch,true));
- return {items,message:items.length?(night?'Vietnam night shift: paid 45-minute lunch.':'Vietnam break policy. Lunch is paid.'):'No breaks.'};
+ return {items,message:explainBand('Vietnam',bands,band,items)+(night?' The shift starts between 10 PM and 6 AM, so the paid lunch is 45 minutes.':band.lunch?' The shift starts outside 10 PM–6 AM, so the paid lunch is 30 minutes.':'')};
 };

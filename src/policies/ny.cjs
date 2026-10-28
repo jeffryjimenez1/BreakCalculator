@@ -1,3 +1,4 @@
+const {describeItems}=require('./explanation.cjs');
 const {breakItem,lunch}=require('./shared.cjs');
 const {parseWallTime,policyClock}=require('../time.cjs');
 const DAY=86400000;
@@ -28,10 +29,12 @@ module.exports=({minutes,start,end,splits=[]})=>{
   if(minutes>=360&&workedMorning)morning=true;
   if(first<morningStart&&last>eveningEnd&&workedMorning&&covers(intervals,eveningStart,eveningEnd))second=true;
  }
- const messages=[],lunches=[];
- if(night){lunches.push(lunch(45));messages.push('Schedule a 45-minute unpaid lunch halfway through the evening/overnight shift.');}
- else if(morning){lunches.push(lunch(30));messages.push('Schedule a 30-minute unpaid lunch between 11 AM and 2 PM, no later than 1 PM. Lunch may come before the first break.');}
- if(second){lunches.push(lunch(30));messages.push('Schedule a second 30-minute unpaid lunch between 5 PM and 7 PM. This also applies across split shifts when both full windows are worked.');}
+ const breakRange=minutes<210?'0:00–3:29':minutes<=360?'3:30–6:00':minutes<=600?'6:01–10:00':'10:01–12:00';
+ const messages=['New York: '+breakRange+' hours → '+describeItems(items)+'.'],lunches=[];
+ if(night){lunches.push(lunch(45));messages.push('The shift starts from 1 PM to before 6 AM and lasts more than six hours → one 45-minute unpaid lunch, scheduled halfway through the shift.');}
+ else if(morning){lunches.push(lunch(30));messages.push('The shift works the entire 11 AM–2 PM window and lasts at least six hours → one 30-minute unpaid lunch in that window, no later than 1 PM.');}
+ if(second){lunches.push(lunch(30));messages.push('The schedule starts before 11 AM, ends after 7 PM, and works both full 11 AM–2 PM and 5 PM–7 PM windows → a second 30-minute unpaid lunch between 5 PM and 7 PM, including split shifts.');}
+ if(!lunches.length)messages.push('No NY lunch condition is met: neither the full morning-window requirement nor the evening/overnight requirement applies.');
  items.splice(Math.min(1,items.length),0,...lunches);
  return {items,message:messages.join('<br>')||(items.length?'New York: paid 15-minute breaks.':'No breaks.')};
 };

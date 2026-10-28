@@ -1,3 +1,4 @@
+const {explainBand}=require('./explanation.cjs');
 const {breakItem,lunch}=require('./shared.cjs');
 
 // United States scheduling table supplied by the user. Durations are working minutes
@@ -15,5 +16,5 @@ module.exports=({minutes})=>{
  if(!band)return {items:[],unsupported:true,message:'United States rules above 12:00 hours have not been configured yet.'};
  const items=Array.from({length:band.breaks},breakItem);
  if(band.lunches)items.splice(1,0,...Array.from({length:band.lunches},()=>lunch(30)));
- return {items,message:items.length?'United States break and lunch policy. Lunch is unpaid.':'No breaks.'};
+ return {items,message:explainBand('United States',bands,band,items)};
 };
