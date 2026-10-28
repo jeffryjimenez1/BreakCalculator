@@ -1,22 +1,20 @@
-const zone = 'America/New_York';
-const formatter = new Intl.DateTimeFormat('en-CA', { timeZone: zone, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+// UTC is only a neutral arithmetic container for entered calendar fields.
+// No entered time is converted to or from a real-world timezone.
 function wallValue(timestamp) {
-  const parts = Object.fromEntries(formatter.formatToParts(timestamp).map(p => [p.type, p.value]));
-  return `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}`;
+ const date=new Date(timestamp);
+ const pad=value=>String(value).padStart(2,'0');
+ return date.getFullYear()+'-'+pad(date.getMonth()+1)+'-'+pad(date.getDate())+'T'+pad(date.getHours())+':'+pad(date.getMinutes());
 }
-function easternTime(value) {
-  if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(value)) throw new Error('Enter a complete date and time.');
-  const nominal = Date.parse(value + ':00Z');
-  if (!Number.isFinite(nominal) || new Date(nominal).toISOString().slice(0, 16) !== value) throw new Error('Enter a valid date and time.');
-  const matches = [4, 5].map(hours => nominal + hours * 3600000).filter(candidate => wallValue(candidate) === value);
-  if (!matches.length) throw new Error('This time does not exist in Eastern Time because clocks move forward. Choose another time.');
-  if (matches.length > 1) throw new Error('This time occurs twice in Eastern Time because clocks move back. Choose a time outside the repeated hour.');
-  return matches[0];
+function parseWallTime(value) {
+ if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(value)) throw new Error('Enter a complete date and time.');
+ const nominal=Date.parse(value+':00Z');
+ if(!Number.isFinite(nominal)||new Date(nominal).toISOString().slice(0,16)!==value)throw new Error('Enter a valid date and time.');
+ return nominal;
 }
 function calculateDuration(start, end, splits = []) {
-  const first = easternTime(start), last = easternTime(end);
+  const first = parseWallTime(start), last = parseWallTime(end);
   if (last <= first) throw new Error('Shift end must be after shift start. For overnight shifts, select the next date.');
-  const intervals = splits.map(([s, e]) => [easternTime(s), easternTime(e)]).sort((a, b) => a[0] - b[0]);
+  const intervals = splits.map(([s, e]) => [parseWallTime(s), parseWallTime(e)]).sort((a, b) => a[0] - b[0]);
   let previous = first, excluded = 0;
   for (const [s, e] of intervals) {
     if (s < first || e > last || e <= s) throw new Error('Each split must end after it starts and stay within the shift.');
@@ -27,9 +25,9 @@ function calculateDuration(start, end, splits = []) {
   if (excluded >= last - first) throw new Error('Splits must leave some working time in the shift.');
   return last - first - excluded;
 }
-// Policy checks use the entered Eastern clock, never the browser timezone.
+// Policy checks use the entered clock directly, never the browser timezone.
 function policyClock(value) {
   const date = new Date(value + ':00Z');
   return { getHours: () => date.getUTCHours(), getMinutes: () => date.getUTCMinutes() };
 }
-module.exports = { easternTime, calculateDuration, policyClock, wallValue };
+module.exports = { parseWallTime, calculateDuration, policyClock, wallValue };

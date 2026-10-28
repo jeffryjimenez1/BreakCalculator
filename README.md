@@ -8,8 +8,16 @@ Responsive shift and break calculator using the existing JavaScript and webpack 
 
 ## Time handling
 
-All input dates and times represent America/New_York, regardless of the viewer's location or selected break policy. Elapsed hours include Eastern daylight saving transitions. Times in the missing spring hour or repeated autumn hour produce a validation message; choose an unambiguous time. Overnight shifts require an explicit following end date.
+Inputs are calendar dates and clock times, used exactly as entered. No timezone conversions or daylight saving adjustments apply. UTC is only used internally as a neutral arithmetic container so every browser returns identical durations. Overnight shifts require an explicit following end date. Default dates use today on the user’s device.
 
 Split intervals are time away, subtracted from the enclosing shift. They must be complete, within the shift and non-overlapping. Paid hours apply the existing location-based lunch deductions after splits. Existing break policy logic and scheduling guidance are retained; this update does not revalidate policy requirements.
 
 The interface stays in plain JavaScript; a framework migration is not required for this scope. The calculation helpers in `src/time.cjs` are separate from the UI and covered by timezone regression tests.
+
+## Country policies
+
+Rules live in src/policies/, separate from DOM rendering. Each country exports an evaluator accepting working minutes (after splits) and entered start/end clock values. It returns items with type, minutes, and paid status, plus a message. The registry in index.cjs is the only place to register a new evaluator. Legacy New York scheduling conditions remain in legacy.cjs for gradual migration.
+
+Paid hours subtract only unpaid lunch items; 15-minute breaks and paid lunches do not reduce paid hours. Malaysia bands use total working time before lunch: 0–209 minutes none, 210–300 one break, 301–360 one break plus unpaid 60-minute lunch, 361–600 two breaks plus unpaid 60-minute lunch. Above 600 minutes is unconfigured and paid hours are withheld.
+
+Run node --test tests/time.test.cjs tests/policies.test.cjs for timezone and country boundary checks.
