@@ -38,3 +38,7 @@ button{min-height:48px}
 /* Compact page title keeps the calculator near the top. */
 .intro{padding:20px 0 18px}.intro h1{font-size:2rem;line-height:1.2;letter-spacing:-.6px;margin:0}
 @media(max-width:480px){.intro{padding:16px 0}.intro h1{font-size:1.75rem}}
+
+/* Space the calculator below the retained brand header. */
+main{padding-top:24px}
+@media(max-width:480px){main{padding-top:16px}}
