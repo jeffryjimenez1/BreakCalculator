@@ -34,3 +34,7 @@ button{min-height:48px}
 
 .et-section{border-top:1px solid #edf0eb;margin-top:24px;padding-top:23px}.et-toggle{display:flex;align-items:center;gap:12px;font-size:1rem;cursor:pointer}.et-toggle input{width:24px;height:24px;min-height:24px;flex-shrink:0;margin:0;accent-color:#193f34}#et-details{margin-top:20px}.et-output{background:#eff5ee;border-radius:9px;padding:12px 16px;overflow-wrap:anywhere}.et-output p{margin:8px 0}#et-error:empty{display:none}
 [hidden]{display:none!important}
+
+/* Compact page title keeps the calculator near the top. */
+.intro{padding:20px 0 18px}.intro h1{font-size:2rem;line-height:1.2;letter-spacing:-.6px;margin:0}
+@media(max-width:480px){.intro{padding:16px 0}.intro h1{font-size:1.75rem}}
