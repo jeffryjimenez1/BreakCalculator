@@ -13,6 +13,12 @@ export function updateEasternTime() {
   zoneSelect.replaceChildren(...countryZones[policy].map(zone => new Option(zoneLabel(zone), zone)));
   zoneSelect.value = savedZones.get(policy) || countryZones[policy][0];
  }
+ const canChooseZone = policy === 'MX';
+ zoneSelect.hidden = !canChooseZone;
+ document.querySelector('label[for="source-zone"]').hidden = !canChooseZone;
+ document.querySelector('#zone-hint').textContent = canChooseZone
+  ? 'Choose the location in Mexico where this shift takes place. ET follows New York daylight saving time.'
+  : 'Shift time zone: ' + zoneLabel(countryZones[policy][0]) + '. ET follows New York daylight saving time.';
  details.hidden = !toggle.checked;
  if (!toggle.checked) return;
  const error = document.querySelector('#et-error');
@@ -22,7 +28,7 @@ export function updateEasternTime() {
   output.textContent = '—';
   const value = document.querySelector('.' + field + '-time').value;
   if (!value) continue;
-  try { output.textContent = easternTime(value, zoneSelect.value); }
+  try { output.textContent = easternTime(value, policy === 'MX' ? zoneSelect.value : countryZones[policy][0]); }
   catch (err) { messages.push((field === 'start' ? 'Start: ' : 'End: ') + err.message); }
  }
  error.textContent = messages.join(' ');

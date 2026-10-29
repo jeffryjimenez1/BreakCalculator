@@ -24,7 +24,7 @@ Run node --test tests/time.test.cjs tests/policies.test.cjs for timezone and cou
 
 ## Eastern Time display
 
-Enable “Show shift times in Eastern Time (ET)” to display both entered dates and times in America/New_York, including EST/EDT. The source time zone defaults to the selected policy country (US: New York; Mexico: Mexico City). Select the actual shift location for countries with multiple zones. This display uses browser IANA time-zone data and updates when inputs, policy, or source zone change. Keep browsers updated for time-zone rule changes.
+Enable “Show shift times in Eastern Time (ET)” to display both entered dates and times in America/New_York, including EST/EDT. The source time zone defaults to the selected policy country (US: New York; Mexico: Mexico City). Only Mexico shows a source-zone dropdown. Other countries use their first configured zone automatically (US and NY: New York; CR: Costa Rica; MY: Kuala Lumpur; PH: Manila; VN: Ho Chi Minh). This display uses browser IANA time-zone data and updates when inputs, policy, or source zone change. Keep browsers updated for time-zone rule changes.
 
 Conversion is display-only: working hours, splits, paid hours, and policy checks continue to use entered clock times. Missing or invalid times, daylight saving gaps, and repeated hours produce a message instead of a guessed conversion. Toggle and source-zone changes preserve calculated results. Reset hides the conversion.
 
