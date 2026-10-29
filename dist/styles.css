@@ -10,3 +10,5 @@
 .lunch-legend{font-size:10px;color:#7a877f;margin:0 0 15px}
 
 .notes h3{margin-top:20px}.notes h3:first-child{margin-top:16px}
+
+.selected-policy-name{display:inline-block;font-size:.85em;font-weight:500;color:#648275}
