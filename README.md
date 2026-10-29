@@ -21,3 +21,11 @@ Rules live in src/policies/, separate from DOM rendering. Each country exports a
 Paid hours subtract only unpaid lunch items; 15-minute breaks and paid lunches do not reduce paid hours. Malaysia bands use total working time before lunch: 0–209 minutes none, 210–300 one break, 301–360 one break plus unpaid 60-minute lunch, 361–600 two breaks plus unpaid 60-minute lunch. Above 600 minutes is unconfigured and paid hours are withheld.
 
 Run node --test tests/time.test.cjs tests/policies.test.cjs for timezone and country boundary checks.
+
+## Eastern Time display
+
+Enable “Show shift times in Eastern Time (ET)” to display both entered dates and times in America/New_York, including EST/EDT. The source time zone defaults to the selected policy country (US: New York; Mexico: Mexico City). Select the actual shift location for countries with multiple zones. This display uses browser IANA time-zone data and updates when inputs, policy, or source zone change. Keep browsers updated for time-zone rule changes.
+
+Conversion is display-only: working hours, splits, paid hours, and policy checks continue to use entered clock times. Missing or invalid times, daylight saving gaps, and repeated hours produce a message instead of a guessed conversion. Toggle and source-zone changes preserve calculated results. Reset hides the conversion.
+
+Run node --test tests/*.test.cjs for calculation and conversion checks.
