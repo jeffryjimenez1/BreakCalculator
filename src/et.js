@@ -16,9 +16,6 @@ export function updateEasternTime() {
  const canChooseZone = policy === 'MX';
  zoneSelect.hidden = !canChooseZone;
  document.querySelector('label[for="source-zone"]').hidden = !canChooseZone;
- document.querySelector('#zone-hint').textContent = canChooseZone
-  ? 'Choose the location in Mexico where this shift takes place. ET follows New York daylight saving time.'
-  : 'Shift time zone: ' + zoneLabel(countryZones[policy][0]) + '. ET follows New York daylight saving time.';
  details.hidden = !toggle.checked;
  if (!toggle.checked) return;
  const error = document.querySelector('#et-error');
