@@ -34,8 +34,10 @@ module.exports=({minutes,start,end,splits=[]})=>{
  if(night){lunches.push(lunch(45));messages.push('The shift starts from 1 PM to before 6 AM and lasts more than six hours → one 45-minute unpaid lunch, scheduled halfway through the shift.');}
  else if(morning){lunches.push(lunch(30));messages.push('The shift works the entire 11 AM–2 PM window and lasts at least six hours → one 30-minute unpaid lunch in that window, no later than 1 PM.');}
  if(second){lunches.push(lunch(30));messages.push('The schedule starts before 11 AM, ends after 7 PM, and works both full 11 AM–2 PM and 5 PM–7 PM windows → a second 30-minute unpaid lunch between 5 PM and 7 PM, including split shifts.');}
- if(!lunches.length&&minutes>=301&&minutes<=600){lunches.push(lunch(30));messages.push('No other NY lunch condition is met and working time is 5:01–10:00 hours → one 30-minute unpaid lunch.');}
+ const fallback=!lunches.length&&minutes>=301&&minutes<=600;
+ if(fallback)lunches.push(lunch(30));
  if(!lunches.length)messages.push('No NY lunch condition is met: neither the full morning-window requirement nor the evening/overnight requirement nor the 5:01–10:00 fallback applies.');
  items.splice(Math.min(1,items.length),0,...lunches);
+ if(fallback)messages.splice(0,messages.length,'New York: '+(minutes<=360?'5:01–6:00':'6:01–10:00')+' hours → '+describeItems(items)+'.');
  return {items,message:messages.join('<br>')||(items.length?'New York: paid 15-minute breaks.':'No breaks.')};
 };

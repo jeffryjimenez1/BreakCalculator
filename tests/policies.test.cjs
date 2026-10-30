@@ -48,6 +48,7 @@ test('NY fallback adds one unpaid 30-minute lunch only from 5:01 through 10:00',
   const result=evaluate('NY',minutes,'2026-10-28T11:01',end);
   assert.deepEqual(result.items.filter(i=>i.type==='lunch'),Array.from({length:expected},()=>({type:'lunch',minutes:30,paid:false})));
   assert.equal(result.paidMinutes,minutes-expected*30);
+  if(expected)assert.equal(result.message,evaluate('US',minutes).message.replace('United States:','New York:'));
   assert.equal(result.items.filter(i=>i.type==='break').length,minutes<=360?1:minutes<=600?2:3);
  }
 });
