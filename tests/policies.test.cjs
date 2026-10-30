@@ -10,17 +10,17 @@ test('NY lunch scenarios use full worked windows, exact boundaries and splits',(
   assert.deepEqual(result.items.filter(i=>i.type==='lunch').map(i=>i.minutes),expected,s+'–'+e);
  };
  check('09:00','15:00',[30]);
- check('11:01','17:01',[]);
- check('13:00','19:00',[]);
+ check('11:01','17:01',[30]);
+ check('13:00','19:00',[30]);
  check('13:00','19:01',[45]);
- check('06:00','12:01',[]);
+ check('06:00','12:01',[30]);
  check('05:59','12:00',[45]);
  check('13:00','23:46',[45]);
  check('08:00','18:31',[30]);
  check('09:00','19:00',[30]);
  check('09:00','19:01',[30,30]);
  check('09:00','20:00',[30,30],[['2026-10-28T14:00','2026-10-28T17:00']]);
- check('09:00','20:00',[],[['2026-10-28T12:00','2026-10-28T13:00']]);
+ check('09:00','20:00',[30],[['2026-10-28T12:00','2026-10-28T13:00']]);
  check('09:00','20:00',[30],[['2026-10-28T18:00','2026-10-28T18:30']]);
 });
 test('Vietnam standard ranges and paid lunches match every minute through 10 hours',()=>{
@@ -40,6 +40,16 @@ test('Vietnam night lunch uses entered clock without timezone conversion',()=>{
   assert.equal(result.paidMinutes,480);
  }
  assert.equal(evaluate('VN',300,'2026-10-28T22:00').items.filter(i=>i.type==='lunch').length,0);
+});
+
+test('NY fallback adds one unpaid 30-minute lunch only from 5:01 through 10:00',()=>{
+ for(const [minutes,expected] of [[300,0],[301,1],[360,1],[361,1],[480,1],[600,1],[601,0]]){
+  const end=new Date(Date.UTC(2026,9,28,11,1+minutes)).toISOString().slice(0,16);
+  const result=evaluate('NY',minutes,'2026-10-28T11:01',end);
+  assert.deepEqual(result.items.filter(i=>i.type==='lunch'),Array.from({length:expected},()=>({type:'lunch',minutes:30,paid:false})));
+  assert.equal(result.paidMinutes,minutes-expected*30);
+  assert.equal(result.items.filter(i=>i.type==='break').length,minutes<=360?1:minutes<=600?2:3);
+ }
 });
 
 test('Philippines matches every minute of the supplied table',()=>{
