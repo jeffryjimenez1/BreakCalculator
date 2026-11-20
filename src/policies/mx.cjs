@@ -6,8 +6,8 @@ const {breakItem,lunch}=require('./shared.cjs');
 const bands=[
  {through:209,breaks:0,lunches:0}, // 0:00–3:29
  {through:300,breaks:1,lunches:0}, // 3:30–5:00
- {through:360,breaks:1,lunches:1}, // 5:01–6:00
- {through:600,breaks:2,lunches:1}, // 6:01–10:00
+ {through:390,breaks:1,lunches:1}, // 5:01–6:30 (up to 6:00 paid)
+ {through:600,breaks:2,lunches:1}, // 6:31–10:00 (starts at 6:01 paid)
  {through:720,breaks:3,lunches:2}  // 10:01–12:00
 ];
 

@@ -48,7 +48,12 @@ test('NY fallback adds one unpaid 30-minute lunch only from 5:01 through 10:00',
   const result=evaluate('NY',minutes,'2026-10-28T11:01',end);
   assert.deepEqual(result.items.filter(i=>i.type==='lunch'),Array.from({length:expected},()=>({type:'lunch',minutes:30,paid:false})));
   assert.equal(result.paidMinutes,minutes-expected*30);
-  if(expected)assert.equal(result.message,evaluate('US',minutes).message.split('<br>')[0].replace('United States:','New York:'));
+  if(expected){
+   const summary=minutes<=360
+    ? '5:01–6:00 hours → 1 × 15-minute break'
+    : '6:01–10:00 hours → 2 × 15-minute breaks';
+   assert.equal(result.message,`New York: ${summary} + 1 × 30-minute unpaid lunch.`);
+  }
   assert.equal(result.items.filter(i=>i.type==='break').length,minutes<=360?1:minutes<=600?2:3);
  }
 });
@@ -68,7 +73,7 @@ test('Philippines matches every minute of the supplied table',()=>{
 });
 for(const code of ['US','MX'])test(`${code} matches every minute of the supplied break and lunch table`,()=>{
  for(let minutes=0;minutes<=720;minutes++){
-  const breaks=minutes<210?0:minutes<=360?1:minutes<=600?2:3;
+  const breaks=minutes<210?0:minutes<=390?1:minutes<=600?2:3;
   const lunches=minutes<=300?0:minutes<=600?1:2;
   const result=evaluate(code,minutes);
   assert.equal(result.items.filter(i=>i.type==='break').length,breaks,`breaks at ${minutes} minutes`);
