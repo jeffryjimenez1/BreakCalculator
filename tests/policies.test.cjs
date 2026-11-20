@@ -48,7 +48,7 @@ test('NY fallback adds one unpaid 30-minute lunch only from 5:01 through 10:00',
   const result=evaluate('NY',minutes,'2026-10-28T11:01',end);
   assert.deepEqual(result.items.filter(i=>i.type==='lunch'),Array.from({length:expected},()=>({type:'lunch',minutes:30,paid:false})));
   assert.equal(result.paidMinutes,minutes-expected*30);
-  if(expected)assert.equal(result.message,evaluate('US',minutes).message.replace('United States:','New York:'));
+  if(expected)assert.equal(result.message,evaluate('US',minutes).message.split('<br>')[0].replace('United States:','New York:'));
   assert.equal(result.items.filter(i=>i.type==='break').length,minutes<=360?1:minutes<=600?2:3);
  }
 });
@@ -78,6 +78,22 @@ for(const code of ['US','MX'])test(`${code} matches every minute of the supplied
  }
  assert.equal(evaluate(code,721).paidMinutes,null);
  assert.match(evaluate(code,721).message,/not been configured/);
+});
+test('US lunch guidance counts worked time across splits and midnight',()=>{
+ const {calculateDuration}=require('../src/time.cjs');
+ const check=(start,end,splits,expected)=>{
+  const minutes=calculateDuration(start,end,splits)/60000;
+  const {message}=evaluatePolicy('US',{minutes,start,end,splits});
+  assert.match(message,/at 4\.5 hours of work/);
+  assert.ok(message.includes(`Suggested start at ${expected}.`),message);
+ };
+ const start='2026-10-28T09:00',end='2026-10-28T18:00';
+ check(start,end,[],'13:30');
+ check(start,end,[['2026-10-28T12:00','2026-10-28T12:45'],['2026-10-28T10:00','2026-10-28T10:30']],'14:45');
+ check(start,end,[['2026-10-28T13:30','2026-10-28T14:00'],['2026-10-28T14:00','2026-10-28T14:30']],'14:30');
+ check('2026-10-28T22:00','2026-10-29T06:00',[],'2026-10-29 at 02:30');
+ assert.doesNotMatch(evaluate('US',300).message,/Schedule your lunch/);
+ assert.match(evaluate('US',601).message,/Schedule your first lunch/);
 });
 test('Malaysia exact boundaries and unpaid lunch deductions',()=>{
  for(const [minutes,breaks,lunch,paid] of [[0,0,0,0],[209,0,0,209],[210,1,0,210],[300,1,0,300],[301,1,60,241],[360,1,60,300],[361,2,60,301],[600,2,60,540]]){
